@@ -1,0 +1,71 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>CIS363 Course Project</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"> 
+<link href="styles.css" rel="stylesheet" type="text/css">
+<!--[if lt IE 9]>
+<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+</head>
+
+<body>
+
+<div class="container">
+  <header>
+    <a href="index.html" class="bordered"><img src="images/techfitlogo.png" alt="TechFit Logo" width="340" height="209" id="Insert_logo" style=display:block;" /></a>
+  </header>
+  <div class="sidebar1">
+  <nav>
+    <ul>
+      <li><a href="reviews.html">Reviews</a></li>
+      <li><a href="guides.html">Guides</a></li>
+      <li><a href="forum.html">Forum</a></li>
+      <li><a href="about.html">About</a></li>
+    </ul>
+</nav>
+  <!-- end .sidebar1 --></div>
+  <article class="content">
+    
+    <h2 id="flyin" style="position:relative;left:-800px;font-style:italic" style=&{ns4def};>About</h2>
+
+<script type="text/javascript">
+
+if (document.getElementById||document.all)
+var crossheader=document.getElementById? document.getElementById("flyin").style : document.all.flyin.style
+
+function animatein(){
+if (parseInt(crossheader.left)<0)
+crossheader.left=parseInt(crossheader.left)+20+"px"
+else{
+crossheader.left=0
+crossheader.fontStyle="normal"
+clearInterval(start)
+}
+}
+
+if (document.getElementById||document.all)
+start=setInterval("animatein()",50)
+
+</script>
+    
+    <div style="position: relative; background-color: #D3D2D2; width: 600px; left: 63px; padding-bottom: 175px;">
+    
+     <p><b>Mission Statement</b></p>
+     <p><i>TechFit, Finding the Tech That Fits You!</i><br> TechFit is committed to providing fair, unbiased analysis on all of the latest technology. We provide a collection of the facts and help establish a catalog of user-perspectives that help you decide which products are a fit and which are a miss for your tech life.</p>
+     <p><b>Meet the Editor</b></p>
+     <img src="images/IMG_0339.png" width="215" height="285" alt="Antho" style="float: left; display: inline-block; margin-right: 15px"/>
+     <br><br><br><p>My name is Anthony Meunier. As a college student, former Geek Squad employee and overall electronics-obsessed consumer, I pride myself on always getting the most bang for my buck. The goal of this website is to provide others the same. Whether you are a seasoned veteran of electronics and computing or a complete beginner, we are here to help!</p>
+    </div>
+      
+      
+  <!-- end .content --></article>
+ 
+  <footer>
+    <p>Copyright &copy; TechFit.com - All Rights Reserved</p>
+  </footer>
+  <!-- end .container --></div>
+</body>
+</html>

@@ -1,0 +1,5 @@
+-- Before running step 2 create following table in your database:
+
+CREATE TABLE contact (
+  name VARCHAR(30) NULL,
+  phone VARCHAR(45) NULL);

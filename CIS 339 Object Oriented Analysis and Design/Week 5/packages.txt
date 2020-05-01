@@ -1,0 +1,27 @@
+Person Pkg>
+Staff
+Administrative
+Physician
+Nurse
+
+Patient Pkg>
+Patient
+PatientNote
+
+Location Pkg>
+Bed
+BedType
+Room
+
+Specialty Pkg>
+StaffMedicalSpecialty
+MedicalSpecialty
+
+Treatment Pkg>
+Service
+ServiceCategory
+Treatment
+
+"Prescription" Pkg>
+Prescription
+Medicine
