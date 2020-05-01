@@ -1,0 +1,16 @@
+import mysql.connector
+
+>>> conn=mysql.connector.connect(user='root',password='password1',host='localhost',database='baseball')
+>>> mycursor=conn.cursor()
+
+>>> query = ("""select t.tname, p.firstname, p.lastname, p.phone
+from
+(select teamcode, tname from baseball.teams) t,
+(select team, firstname, lastname, phone from baseball.players) p
+where t.teamcode = p.team""")
+
+>>> mycursor.execute(query)
+
+>>> for (tname, firstname, lastname, phone) in mycursor:
+	print("{}, {} {}, {}".format(
+		tname, firstname, lastname, phone))

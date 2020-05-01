@@ -1,0 +1,153 @@
+--1
+
+create database Baseball;
+
+use baseball;
+
+--2
+
+create table Teams (TeamCode char(5), TName char(20), TAddress char(30), TCity char(20),
+TState char(2), TZip char(9), Wins integer, Losses integer);
+
+--3
+
+Insert into Teams
+(TeamCode, TName, TAddress, TCity, TState, TZip, Wins, Losses)
+Values
+(12345, 'No Fighters', '5606 Heather Highway', 'Hanai', 'HI', 96753, 7, 3),
+(23456, 'Water Bricks', '7185 Pleasant Pike', 'Point Lay', 'ME', 04217, 8, 2),
+(34567, 'Vegetables', '777 Umber Inlet', 'New York', 'HI', 96862, 4, 6),
+(45678, 'Savages', '738 Little Branch Nook', 'Reduction', 'MI', 48049, 7, 3),
+(56789, 'Engorged Bugs', '5006 Amber Spring Wynd', 'Bushnell', 'NC', 27215, 2, 8),
+(67890, 'Ozone Champs', '4797 Honey Timber Pathway', 'Salt Lick', 'MT', 59010, 1, 9),
+(78901, 'Mighty Streak', '3066 Crystal Shadow Row', 'Pepper Pike', 'HI', 96860, 0, 10),
+(89012, 'Lucky Flies', '5609 Sleepy Quail Hollow', 'Nickelplate', 'NC', 28452, 8, 2);
+
+--4
+
+create table Players (FirstName char(20), LastName char(30), MidInit char(1), PAddress char(30),
+PCity char(20), PState char(2), PZip char(9), Phone char(11), Team char(5));
+
+--5
+
+Insert into Players
+(FirstName, LastName, MidInit, PAddress, PCity, PState, PZip, Phone, Team)
+Values
+
+('Noelani', 'Konani', 'K', '7134 Emerald View', 'Hanai', 'HI', 96753, 6816918412, 12345),
+('Ekewaka', 'Kanani', 'K', '5206 Sleepy Shadow Harbour', 'Good Grief', 'HI', 90052, 6883467287, 12345),
+('Maile', 'Malia', 'M','9599 High Hills Wharf', 'Killam', 'HI', 96712, 6835177700, 12345),
+('Leimomi', 'Akamu', 'I', '9782 Fallen Court', 'Moonshine', 'HI', 96842, 6527122331, 12345),
+('Kekoa', 'Kimo', 'H','6890 Quiet Estates', 'Hog Landing', 'HI', 93415, 6791532574, 12345),
+('Kimo', 'Leimomi', 'K', '9630 Dusty Autumn', 'Sweet Home', 'HI', 99941, 6872601490, 12345),
+('Moana', 'Melika', 'K', '4413 Gentle Rise Way', 'Namekagon', 'HI', 96341, 6755311395, 12345),
+('Malie', 'Kekepania', 'P', '737 Noble Willow', 'Missisinewa', 'HI', 96799, 6818032432, 12345),
+('Moana', 'Makana', 'I', '1682 Merry River Grove', 'Owl Trap', 'HI', 91452, 6819495042, 12345),
+('Mele', 'Kamalani', 'K', '3055 Round Common', 'Kinikinik', 'HI', 96644, 6859634672, 12345);
+
+Insert into Players
+(FirstName, LastName, MidInit, PAddress, PCity, PState, PZip, Phone, Team)
+Values
+
+('Rosie', 'Edwards', 'J', '4808 Jefferson Street', 'Hampton', 'VA', 23666, 7578270611, 23456),
+('Dennis', 'McCarthy', 'C', '1991 Concord Street', 'Charlotte', 'NC', 28212, 7045630347, 23456),
+('Ronnie', 'Gordon', 'G','1015 Sugarfoot Lane', 'Lafayette', 'IN', 47906, 7654139171, 23456),
+('Nicole', 'Joseph', 'P', '3010 Asylum Avenue', 'Stamford', 'CT', 06902, 2037055752, 23456),
+('Ronald', 'Creighton', 'K','3963 Skinner Hollow Road', 'Medford', 'OR', 97501, 5417769523, 23456),
+('Margaret', 'Orr', 'D', '2972 Caldwell Road', 'Rochester', 'NY', 14613, 5852779778, 23456),
+('Robin', 'Russell', 'N', '962 Southern Street', 'Floral Park', 'NY', 11001, 5166161426, 23456),
+('Carol', 'Brown', 'J', '4576 Boggess Street', 'Dayton', 'OH', 45406, 9379248971, 23456),
+('Nina', 'Frisbie', 'R', '2688 Dogwood Lane', 'Tucson', 'AZ', 85711, 5205847928, 23456),
+('Amanda', 'Miller', 'M', '1180 Golden Street', 'Miami', 'FL', 33179, 3056590839, 23456);
+
+Insert into Players
+(FirstName, LastName, MidInit, PAddress, PCity, PState, PZip, Phone, Team)
+Values
+
+('Joshua', 'Dean', 'J', '3039 Randall Drive', 'Honolulu', 'HI', 96819, 8088567746, 34567),
+('David', 'Thomas', 'C', '2072 Rosewood Lane', 'New York', 'NY', 10022, 2129636328, 34567),
+('Stacy', 'Heidt', 'J','426 Woodrow Way', 'Huntsville', 'TX', 77340, 9364398699, 34567),
+('Diane', 'Cook', 'J', '3067 Maple Avenue', 'Meridian', 'ID', 83642, 2088980195, 34567),
+('Jose', 'Anderson', 'M','4135 Bingamon Road', 'Cleveland', 'OH', 44115, 4405845731, 34567),
+('Amber', 'Harrison', 'G', '1417 Hart Country Lane', 'Columbus', 'GA', 31901, 7065968824, 34567),
+('Kim', 'Clement', 'T', '4537 Wildrose Lane', 'Detroit', 'MI', 48214, 3138226690, 34567),
+('Alice', 'Decoteau', 'J', '2877 Ferry Street', 'Huntsville', 'AL', 35816, 2567889110, 34567),
+('Susan', 'Rayo', 'T', '3365 Sunset Drive', 'Pine Bluff', 'AR', 71601, 8706329161, 34567),
+('Jonathan', 'Drennan', 'C', '2166 Coal Road', 'Pittston', 'PA', 18640, 5706977191, 34567);
+
+Insert into Players
+(FirstName, LastName, MidInit, PAddress, PCity, PState, PZip, Phone, Team)
+Values
+
+('Ignacio', 'Midkiff', 'D', '3675 Pooh Bear Lane', 'Marietta', 'SC', 29683, 8648367160, 45678),
+('Stephanie', 'Jorgenson', 'C', '2228 Hawks Nest Lane', 'Saint Louis', 'MO', 63108, 3147700438, 45678),
+('Ginny', 'Hammond', 'R','3841 Diane Street', 'Arroyo Grande', 'CA', 93420, 8054747000, 45678),
+('Dewitt', 'Wolfe', 'B', '771 Shady Pines Drive', 'Wytheville', 'VA', 24382, 2762001674, 45678),
+('Moses', 'McMillian', 'B','1368 Quincy Street', 'Norristown', 'PA', 19403, 2675155470, 45678),
+('Marguerite', 'Henderson', 'D', '1383 Werninger Street', 'Houston', 'TX', 77032, 8326549416, 45678),
+('Wilfredo', 'Nolin', 'M', '2527 Laurel Lane', 'Hobbs', 'TX', 88240, 4322973347, 45678),
+('Kevin', 'Stover', 'J', '4 Elm Drive', 'Garden City', 'NY', 11530, 6464205323, 45678),
+('Josephine', 'Snyder', 'D', '2135 Koontz Lane', 'Los Angeles', 'CA', 90017, 8187967732, 45678),
+('Kathy', 'Votaw', 'M', '2109 Rodney Street', 'Saint Louis', 'MO', 63101, 6364872643, 45678);
+
+Insert into Players
+(FirstName, LastName, MidInit, PAddress, PCity, PState, PZip, Phone, Team)
+Values
+
+('Jose', 'Gilman', 'F', '772 Holly Street', 'Charlotte', 'NC', 28202, 7049796634, 56789),
+('Leroy', 'Ross', 'M', '3132 Hilltop Drive', 'Coldwater', 'TX', 79022, 8063776577, 56789),
+('Peter', 'Diaz', 'F','2569 Science Center Drive', 'Saint Anthony', 'ID', 83445, 2086240385, 56789),
+('Derick', 'Burdick', 'J', '2321 Broadcast Drive', 'Alexandria', 'VA', 22312, 7039412031, 56789),
+('Malcom', 'Yokota', 'L','3063 Bryan Avenue', 'Eagan', 'MN', 55121, 6513296846, 56789),
+('Sharon', 'Dell', 'J', '3668 Mapleview Drive', 'Winter Haven', 'FL', 33830, 7279351601, 56789),
+('Sheena', 'Lavigne', 'G', '876 Wildrose Lane', 'Detroit', 'MI', 48202, 3138706754, 56789),
+('Teresa', 'Banks', 'M', '3857 Heavner Court', 'Levittown', 'NY', 11756, 5162514423, 56789),
+('Leticia', 'Nelson', 'C', '2281 Havanna Street', 'Sparta', 'NC', 28675, 3363727257, 56789),
+('David', 'Swain', 'M', '3338 Jerry Dove Drive', 'Beaufort', 'SC', 29902, 8435220530, 56789);
+
+Insert into Players
+(FirstName, LastName, MidInit, PAddress, PCity, PState, PZip, Phone, Team)
+Values
+
+('Christina', 'Barksdale', 'M', '4228 Hardman Road', 'Rutland', 'VT', 05701, 8027867742, 67890),
+('Richard', 'Harris', 'B', '1009 Ashcraft Court', 'San Diego', 'CA', 92117, 6193413332, 67890),
+('Rita', 'Chidester', 'D','1117 Frank Avenue', 'Springfield', 'MA', 01103, 4132058428, 67890),
+('Neil', 'Haney', 'C', '4809 Dog Hill Lane', 'Overbrook', 'KS', 66524, 7856652784, 67890),
+('Adolph', 'Byard', 'L','3257 Alexander Drive', 'Arlington', 'TX', 76011, 9403673919, 67890),
+('Richard', 'Woolverton', 'V', '1832 Hillcrest Lane', 'Irvine', 'CA', 92714, 9497847479, 67890),
+('Johnnie', 'Smith', 'M', '2011 Poplar Lane', 'Hialeah', 'FL', 33012, 3055019919, 67890),
+('Caryn', 'Garland', 'P', '1790 Jessie Street', 'Worthington', 'OH', 43085, 7406617467, 67890),
+('Cora', 'Bellinger', 'N', '3758 Ryan Road', 'Lake Andes', 'SD', 57356, 6054879354, 67890),
+('Matthew', 'Nieves', 'A', '3481 Hewes Avenue', 'Baltimore', 'MD', 21201, 4435769279, 67890);
+
+Insert into Players
+(FirstName, LastName, MidInit, PAddress, PCity, PState, PZip, Phone, Team)
+Values
+
+('Robert', 'Black', 'D', '1779 Yorkshire Circle', 'Rocky Mount', 'NC', 27801, 2523157430, 78901),
+('Jessica', 'McMillian', 'J', '4390 Kimberly Way', 'Grand Rapids', 'MI', 49503, 6168904809, 78901),
+('Robert', 'Ringo', 'M','3624 Old House Drive', 'Piketon', 'OH', 45661, 7408970275, 78901),
+('Kenneth', 'Sweet', 'C', '4326 Green Hill Road', 'Pea Ridge', 'AR', 72751, 4794513247, 78901),
+('Michael', 'Herr', 'D','3396 Golf Course Drive', 'Manassas', 'VA', 22110, 7033652130, 78901),
+('Julia', 'Cha', 'W', '4354 Marcus Street', 'Gadsden', 'AL', 35901, 2565496211, 78901),
+('John', 'Love', 'A', '3945 Tyler Avenue', 'Miami', 'FL', 33179, 3053060880, 78901),
+('Martha', 'Schmidt', 'C', '2190 Hood Avenue', 'Carlsbad', 'CA', 92009, 8586633216, 78901),
+('Walter', 'Higgins', 'M', '3808 Byers Lane', 'Chico', 'CA', 95928, 5307790384, 78901),
+('Jason', 'Sandoval', 'C', '3035 Lowland Drive', 'Cordova', 'IL', 61242, 8154069143, 78901);
+
+Insert into Players
+(FirstName, LastName, MidInit, PAddress, PCity, PState, PZip, Phone, Team)
+Values
+
+('Rex', 'Heisler', 'D', '834 Farland Street', 'Westborough', 'MA', 01581, 7742493439, 89012),
+('Michele', 'Rivera', 'C', '318 Clifford Street', 'Oakland', 'CA', 94612, 5106258621, 89012),
+('Roy', 'Smith', 'S','1054 Briarhill Lane', 'Youngstown', 'OH', 44503, 3302331762, 89012),
+('Carol', 'Ramirez', 'J', '2143 Junkins Avenue', 'Nashville', 'GA', 31630, 2295436414, 89012),
+('Brittany', 'Near', 'F','1772 Bottom Lane', 'Fredonia', 'NY', 14063, 7166790071, 89012),
+('Linda', 'Alonzo', 'D', '1508 McVaney Road', 'Forest City', 'NC', 28043, 8282294393, 89012),
+('Zachary', 'Brown', 'A', '1622 Five Points', 'Baltimore', 'MD', 21201, 4432182047, 89012),
+('Beverly', 'Totten', 'J', '1468 Virginia Street', 'Wheeling', 'IL', 60090, 7735569931, 89012),
+('Wayne', 'Cooper', 'S', '3577 Burnside Court', 'Phoenix', 'AZ', 85017, 6023358497, 89012),
+('Marie', 'Watkins', 'M', '1071 Wetzel Lane', 'Grand Rapids', 'MI', 49503, 2312499958, 89012);
+
+COMMIT;

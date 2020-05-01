@@ -1,0 +1,51 @@
+use baseball;
+
+#1
+
+create table NextSeason as select * from Season where 1=2;
+
+insert into NextSeason
+select * from Season;
+
+#2
+
+ALTER TABLE `baseball`.`nextseason`
+
+ADD COLUMN `Innings` INT NULL AFTER `AwayTeamScore`;
+
+#3
+
+ALTER TABLE `baseball`.`pastseasons`
+ADD COLUMN `Innings` INT NULL AFTER `AwayTeamScore`;
+
+#4
+
+drop table `baseball`.`season`;
+
+#5
+
+alter table `baseball`.`NextSeason` rename to `Season`;
+
+#6
+
+ALTER TABLE `baseball`.`teams`
+
+ADD INDEX `idx_TeamCode` (`TeamCode` ASC);
+
+#7
+
+ALTER TABLE `baseball`.`players`
+
+ADD INDEX `idx_Team` (`Team` ASC);
+
+#8
+
+select t.teamcode, p.firstname, p.lastname
+
+from
+
+(select teamcode from baseball.teams) t,
+
+(select team, firstname, lastname from baseball.players) p
+
+where t.teamcode = p.team;

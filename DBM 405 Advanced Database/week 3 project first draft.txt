@@ -1,0 +1,249 @@
+create databse payroll_management;
+
+use payroll_management
+
+
+create table Employee
+(
+EmployeeID varchar(5),
+FirstName char(20) NOT NULL,
+LastName char(30) NOT NULL,
+Email varchar(30),
+DOB date,
+Address varchar(30),
+City char(20),
+State char(2),
+Zip varchar(9),
+Phone varchar(10),
+PRIMARY KEY (EmployeeID)
+);
+
+create table Payroll
+(
+PayrollID varchar(10),
+PayDate date,
+PayAmount varchar(15),
+EmployeeID varchar(5),
+PRIMARY KEY (PayrollID),
+FOREIGN KEY (EmployeeID) references Employee(EmployeeID)
+);
+
+create table Salary
+(
+SalaryID varchar(10),
+SalaryAmount varchar(15) NOT NULL,
+EffectiveDate date NOT NULL,
+EndDate date NOT NULL,
+EmployeeID varchar(5),
+BonusAmount varchar(15),
+PRIMARY KEY (SalaryID),
+FOREIGN KEY (EmployeeID) references Employee(EmployeeID)
+);
+
+
+create table Deductions
+(
+DeductionID varchar(10),
+DeductionEffectiveDate date NOT NULL,
+DeductionEndDate date,
+EmployeeID varchar(5),
+PRIMARY KEY (DeductionID),
+FOREIGN KEY (EmployeeID) references Employee(EmployeeID)
+);
+
+create table Allowances
+(
+AllowanceID varchar(10),
+MaritalStatus char(1) NOT NULL,
+AllowanceType varchar(20),
+AllowanceDesc varchar(50),
+AllowanceEffectiveDate date NOT NULL,
+AllowanceEndDate date,
+EmployeeID varchar(5),
+PRIMARY KEY (AllowanceID),
+FOREIGN KEY (EmployeeID) references Employee(EmployeeID)
+);
+
+create table Department
+(
+DeptID varchar(10),
+DeptName varchar(20),
+DeptEffectiveDate date NOT NULL,
+DeptEndDate date,
+EmployeeID varchar(5),
+PRIMARY KEY (DeptID),
+FOREIGN KEY (EmployeeID) references Employee(EmployeeID)
+);
+
+create table DeductionType
+(
+DeductionTypeID varchar(10),
+DeductionType varchar(20),
+DeductionDesc varchar(50),
+DeductionID varchar(10),
+PRIMARY KEY (DeductionTypeID),
+FOREIGN KEY (DeductionID) references Deductions(DeductionID)
+);
+
+
+
+Insert into Employee
+(EmployeeID, FirstName, LastName, Email, DOB, Address, City, State, Zip, Phone)
+Values
+
+(37670, 'Joshua', 'Dean', 'peddappidde-3775@yopmail.com', '1984-01-29', '3039 Randall Drive', 'Honolulu', 'HI', 96819, 8088567746),
+(92013, 'David', 'Thomas', 'samer.az@deadfake.tk', '1958-04-05', '2072 Rosewood Lane', 'New York', 'NY', 10022, 2129636328),
+(21822, 'Stacy', 'Heidt', 'oblllever@trash-mail.tk', '1960-03-11', '426 Woodrow Way', 'Huntsville', 'TX', 77340, 9364398699),
+(85920, 'Diane', 'Cook', 'gusttavao.lima@5mail.cf', '1960-11-15', '3067 Maple Avenue', 'Meridian', 'ID', 83642, 2088980195),
+(21194, 'Jose', 'Anderson', 'emir.ammar09@trash-mail.gq', '1961-01-21', '4135 Bingamon Road', 'Cleveland', 'OH', 44115, 4405845731),
+(55962, 'Amber', 'Harrison', 'Fortaked1961@armyspy.com', '1963-08-21', '1417 Hart Country Lane', 'Columbus', 'GA', 31901, 7065968824),
+(21662, 'Kim', 'Clement', 'Wease1982@teleworm.us', '1964-02-17', '4537 Wildrose Lane', 'Detroit', 'MI', 48214, 3138226690),
+(35458, 'Alice', 'Decoteau', 'Lichme78@cuvox.de', '1966-04-13', '2877 Ferry Street', 'Huntsville', 'AL', 35816, 2567889110),
+(85937, 'Susan', 'Rayo', 'Geolas@cuvox.de', '1970-02-27', '3365 Sunset Drive', 'Pine Bluff', 'AR', 71601, 8706329161),
+(68090, 'Jonathan', 'Drennan', 'Mund1930@jourrapide.com', '1970-06-01', '2166 Coal Road', 'Pittston', 'PA', 18640, 5706977191),
+(68521, 'Ignacio', 'Midkiff', 'Vioner@superrito.com', '1971-05-18', '3675 Pooh Bear Lane', 'Marietta', 'SC', 29683, 8648367160),
+(73013, 'Stephanie', 'Jorgenson', 'Kinkin@superrito.com', '1972-01-19', '2228 Hawks Nest Lane', 'Saint Louis', 'MO', 63108, 3147700438),
+(88520, 'Ginny', 'Hammond', 'assarridony-8419@yopmail.com', '1973-01-11', '3841 Diane Street', 'Arroyo Grande', 'CA', 93420, 8054747000),
+(04859, 'Dewitt', 'Wolfe', 'Witaken@cuvox.de', '1977-04-07', '771 Shady Pines Drive', 'Wytheville', 'VA', 24382, 2762001674),
+(12707, 'Moses', 'McMillian', 'Lopurter@armyspy.com', '1980-12-18', '1368 Quincy Street', 'Norristown', 'PA', 19403, 2675155470),
+(61155, 'Marguerite', 'Henderson', 'Scrity1961@fleckens.hu', '1985-03-06', '1383 Werninger Street', 'Houston', 'TX', 77032, 8326549416),
+(19137, 'Wilfredo', 'Nolin', 'Winvelits@einrot.com', '1987-07-14', '2527 Laurel Lane', 'Hobbs', 'TX', 88240, 4322973347),
+(83083, 'Kevin', 'Stover', 'Ecaut1927@dayrep.com', '1989-09-22', '4 Elm Drive', 'Garden City', 'NY', 11530, 6464205323),
+(68418, 'Josephine', 'Snyder', 'Stookins@jourrapide.com', '1990-12-26', '2135 Koontz Lane', 'Los Angeles', 'CA', 90017, 8187967732),
+(23163, 'Kathy', 'Votaw', 'Drel1978@teleworm.us', '1994-04-16', '2109 Rodney Street', 'Saint Louis', 'MO', 63101, 6364872643);
+
+Insert into Payroll
+(PayrollID, PayDate, PayAmount, EmployeeID)
+Values
+
+(4407750130, '2015-05-22', '$1278.95', 37670),
+(2069391650, '2015-05-22', '$877.24', 92013),
+(0943223051, '2015-05-22', '$946.55', 21822),
+(4746182075, '2015-05-22', '$1462.03', 85920),
+(1240968556, '2015-05-22', '$475.87', 21194),
+(9336416685, '2015-05-22', '$764.49', 55962),
+(5009545392, '2015-05-22', '$825.61', 21662),
+(0721089666, '2015-05-22', '$551.30', 35458),
+(0834722075, '2015-05-22', '$763.40', 85937),
+(7384710436, '2015-05-22', '$702.44', 68090),
+(1263411095, '2015-05-22', '$910.72', 68521),
+(1989175079, '2015-05-22', '$1176.81', 73013),
+(8374025049, '2015-05-22', '$1673.11', 88520),
+(6722209194, '2015-05-22', '$672.61', 04859),
+(2238565768, '2015-05-22', '$843.67', 12707),
+(1730606476, '2015-05-22', '$971.60', 61155),
+(6769806570, '2015-05-22', '$662.07', 19137),
+(4128357298, '2015-05-22', '$779.34', 83083),
+(9036988319, '2015-05-22', '$1091.02', 68418),
+(8883306953, '2015-05-22', '$513.42', 23163);
+
+Insert into Salary
+(SalaryID, SalaryAmount, EffectiveDate, EndDate, EmployeeID, BonusAmount)
+Values
+
+(26837, '$50,000', '2015-01-01', '2015-12-31', 37670, '$5000'),
+(89689, '$30,000', '2015-01-01', '2015-12-31', 92013, '$3000'),
+(01334, '$40,000', '2015-01-01', '2015-12-31', 21822, '$4000'),
+(22426, '$50,000', '2015-01-01', '2015-12-31', 85920, '$5000'),
+(92144, '$10,000', '2015-01-01', '2015-12-31', 21194, '$1000'),
+(78623, '$30,000', '2015-01-01', '2015-12-31', 55962, '$3000'),
+(94657, '$30,000', '2015-01-01', '2015-12-31', 21662, '$3000'),
+(09809, '$20,000', '2015-01-01', '2015-12-31', 35458, '$2000'),
+(53358, '$30,000', '2015-01-01', '2015-12-31', 85937, '$3000'),
+(61914, '$30,000', '2015-01-01', '2015-12-31', 68090, '$3000'),
+(13787, '$40,000', '2015-01-01', '2015-12-31', 68521, '$4000'),
+(39951, '$50,000', '2015-01-01', '2015-12-31', 73013, '$5000'),
+(12676, '$50,000', '2015-01-01', '2015-12-31', 88520, '$5000'),
+(24166, '$20,000', '2015-01-01', '2015-12-31', 04859, '$2000'),
+(85269, '$30,000', '2015-01-01', '2015-12-31', 12707, '$3000'),
+(10100, '$40,000', '2015-01-01', '2015-12-31', 61155, '$4000'),
+(07462, '$20,000', '2015-01-01', '2015-12-31', 19137, '$2000'),
+(24757, '$30,000', '2015-01-01', '2015-12-31', 83083, '$3000'),
+(00885, '$50,000', '2015-01-01', '2015-12-31', 68418, '$5000'),
+(64971, '$20,000', '2015-01-01', '2015-12-31', 23163, '$2000');
+
+
+Insert into Deductions
+(DeductionID, DeductionEffectiveDate, DeductionEndDate, EmployeeID)
+Values
+
+(382, '2015-01-01', '2015-12-31', 37670),
+(091, '2015-01-01', '2015-12-31', 92013),
+(220, '2015-01-01', '2015-12-31', 21822),
+(998, '2015-01-01', '2015-12-31', 85920),
+(296, '2015-01-01', '2015-12-31', 21194),
+(533, '2015-01-01', '2015-12-31', 55962),
+(966, '2015-01-01', '2015-12-31', 21662),
+(388, '2015-01-01', '2015-12-31', 35458),
+(715, '2015-01-01', '2015-12-31', 85937),
+(141, '2015-01-01', '2015-12-31', 68090),
+(194, '2015-01-01', '2015-12-31', 68521),
+(098, '2015-01-01', '2015-12-31', 73013),
+(350, '2015-01-01', '2015-12-31', 88520),
+(537, '2015-01-01', '2015-12-31', 04859),
+(551, '2015-01-01', '2015-12-31', 12707),
+(118, '2015-01-01', '2015-12-31', 61155),
+(684, '2015-01-01', '2015-12-31', 19137),
+(351, '2015-01-01', '2015-12-31', 83083),
+(622, '2015-01-01', '2015-12-31', 68418),
+(309, '2015-01-01', '2015-12-31', 23163);
+
+Insert into Allowances
+(AllowanceID, MaritalStatus, AllowanceType, AllowanceDesc, AllowanceEffectiveDate, AllowanceEndDate, EmployeeID)
+Values
+
+(00001, 'N', 0, 'Withholding zero allowances', '2015-01-01', '2015-12-31', 37670),
+(00002, 'N', 1, 'Withholding one allowance', '2015-01-01', '2015-12-31', 92013),
+(00003, 'N', 2, 'Withholding two allowances', '2015-01-01', '2015-12-31', 21822),
+(00004, 'N', 3, 'Withholding three allowances', '2015-01-01', '2015-12-31', 85920),
+(00001, 'N', 0, 'Withholding zero allowances', '2015-01-01', '2015-12-31', 21194),
+(00002, 'N', 1, 'Withholding one allowance', '2015-01-01', '2015-12-31', 55962),
+(00003, 'N', 2, 'Withholding two allowances', '2015-01-01', '2015-12-31', 21662),
+(00004, 'N', 3, 'Withholding three allowances', '2015-01-01', '2015-12-31', 35458),
+(00001, 'N', 0, 'Withholding zero allowances', '2015-01-01', '2015-12-31', 85937),
+(00002, 'N', 1, 'Withholding one allowance', '2015-01-01', '2015-12-31', 68090),
+(00003, 'N', 2, 'Withholding two allowances', '2015-01-01', '2015-12-31', 68521),
+(00004, 'N', 3, 'Withholding three allowances', '2015-01-01', '2015-12-31', 73013),
+(00001, 'N', 0, 'Withholding zero allowances', '2015-01-01', '2015-12-31', 88520),
+(00002, 'N', 1, 'Withholding one allowance', '2015-01-01', '2015-12-31', 04859),
+(00003, 'N', 2, 'Withholding two allowances', '2015-01-01', '2015-12-31', NULL, 12707),
+(00004, 'N', 3, 'Withholding three allowances', '2015-01-01', '2015-12-31', 61155),
+(00001, 'N', 0, 'Withholding zero allowances', '2015-01-01', '2015-12-31', 19137),
+(00002, 'N', 1, 'Withholding one allowance', '2015-01-01', '2015-12-31', 83083),
+(00003, 'N', 2, 'Withholding two allowances', '2015-01-01', '2015-12-31', 68418),
+(00004, 'N', 3, 'Withholding three allowances', '2015-01-01', '2015-12-31', 23163);
+
+Insert into Department
+(DeptID, DeptName, DeptEffectiveDate, DeptEndDate, EmployeeID)
+Values
+
+(00001, 'Production', '2015-01-01', NULL, 37670),
+(00002, 'Research', '2015-01-01', NULL, 92013),
+(00003, 'Purchasing', '2015-01-01', NULL, 21822),
+(00004, 'Marketing', '2015-01-01', NULL, 85920),
+(00005, 'Human Resources', '2015-01-01', NULL, 21194),
+(00001, 'Production', '2015-01-01', NULL, 55962),
+(00002, 'Research', '2015-01-01', NULL, 21662),
+(00003, 'Purchasing', '2015-01-01', NULL, 35458),
+(00004, 'Marketing', '2015-01-01', NULL, 85937),
+(00005, 'Human Resources', '2015-01-01', NULL, 68090),
+(00001, 'Production', '2015-01-01', NULL, 68521),
+(00002, 'Research', '2015-01-01', NULL, 73013),
+(00003, 'Purchasing', '2015-01-01', NULL, 88520),
+(00004, 'Marketing', '2015-01-01', NULL, 04859),
+(00005, 'Human Resources', '2015-01-01', NULL, 12707),
+(00001, 'Production', '2015-01-01', NULL, 61155),
+(00002, 'Research', '2015-01-01', NULL, 19137),
+(00003, 'Purchasing', '2015-01-01', NULL, 83083),
+(00004, 'Marketing', '2015-01-01', NULL, 68418),
+(00005, 'Human Resources', '2015-01-01', NULL, 23163);
+
+Insert into DeductionType
+(DeductionTypeID, DeductionType, DeductionDesc, DeductionID)
+Values
+
+(1, 'Federal', 'Federal withholding', 1),
+(2, 'State', 'State and local withholding', 2),
+(3, 'Benefit', 'Voluntary opt in to receive various paid benefits', 3),
+(12, 'Fed/State', 'Federal and State deductions', 12),
+(123, 'Fed/State/Benefit', 'Federal, State, and Benefits deductions', 123);

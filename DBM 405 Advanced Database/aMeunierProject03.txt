@@ -1,0 +1,109 @@
+#Anthony Meunier
+#DBM 405
+#Course Project
+#Week 3
+
+create database payroll;
+use payroll
+
+
+#Create tables and define data types
+
+
+create table Department
+(
+DepartmentNumber integer,
+DepartmentName char(20),
+PRIMARY KEY (DepartmentNumber)
+);
+
+
+create table Employee
+(
+EmployeeNumber integer,
+EmployeeName char(30),
+Salary varchar(10),
+TaxPercentWithheld varchar(3),
+MedicalWithheld varchar(10),
+OtherDeductions varchar(10),
+DepartmentNumber integer,
+PRIMARY KEY (EmployeeNumber),
+FOREIGN KEY (DepartmentNumber) references Department(DepartmentNumber)
+);
+
+
+create table Project
+(
+ProjectNumber integer,
+ProjectName char(20),
+ProjectManager char(30),
+PRIMARY KEY (ProjectNumber)
+);
+
+create table EmployeeProject
+(
+EmployeeNumber integer,
+ProjectNumber integer,
+Date date,
+HoursWorked integer,
+PRIMARY KEY (EmployeeNumber, ProjectNumber, Date)
+);
+
+
+#Populate tables with data
+
+
+Insert into Department
+(DepartmentNumber, DepartmentName)
+Values
+
+(10000, 'Production'),
+(20000, 'Development'),
+(30000, 'Marketing'),
+(40000, 'Purchasing'),
+(50000, 'Human Resources');
+
+
+Insert into Employee
+(EmployeeNumber, EmployeeName, Salary, TaxPercentWithheld, MedicalWithheld, OtherDeductions, DepartmentNumber)
+Values
+
+(07899, 'Ginny Hammond', '$2763.00', '17%', '$276.30', '$138.15', 10000),
+(66846, 'David Thomas', '$1762.00', '13%', '$176.20', '$88.10', 20000),
+(01465, 'Kim Clement', '$3300.00', '19%', '$330.00', '$165.00', 30000),
+(58049, 'Joshua Henderson', '$1275.00', '11%', '$127.50', '$63.75', 40000),
+(29134, 'Kathy Votaw', '$1100.00', '10%', '$110.00', '$55.00', 50000);
+
+
+Insert into Project
+(ProjectNumber, ProjectName, ProjectManager)
+Values
+
+(40913, 'Steamy Crayon', 'Ginny Hammond'),
+(03255, 'Grim Lama', 'David Thomas'),
+(94007, 'Furious Compass', 'Kim Clement'),
+(24126, 'Indigo Toupee', 'Joshua Henderson'),
+(44281, 'Iron Early', 'Kathy Votaw');
+
+
+Insert into EmployeeProject
+(EmployeeNumber, ProjectNumber, Date, HoursWorked)
+Values
+
+(07899, 40913, '2014-10-15', 40),
+(66846, 03255, '2014-03-07', 30),
+(01465, 94007, '2015-01-27', 35),
+(58049, 24126, '2014-07-22', 20),
+(29134, 44281, '2014-05-05', 25);
+
+
+#Display table output
+
+
+select * from department;
+
+select * from employee;
+
+select * from project;
+
+select * from employeeproject;

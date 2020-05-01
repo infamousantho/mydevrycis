@@ -1,0 +1,103 @@
+use baseball;
+
+#1
+
+create table Season
+(
+Season integer,
+PlayDate date,
+HomeTeam char(15),
+HomeTeamScore integer,
+AwayTeam char(15),
+AwayTeamScore integer
+);
+
+#2
+
+Insert into Season
+(Season, PlayDate, HomeTeam, HomeTeamScore, AwayTeam, AwayTeamScore)
+Values
+
+(2015, '2015-01-01', 'No Fighters',NULL , 'Water Bricks',NULL ),
+(2015, '2015-01-02', 'No Fighters',NULL , 'Vegetables',NULL ),
+(2015, '2015-01-03', 'No Fighters',NULL , 'Savages',NULL),
+(2015, '2015-01-04', 'No Fighters',NULL , 'Engorged Bugs',NULL),
+(2015, '2015-01-05', 'No Fighters',NULL , 'Ozone Champs',NULL),
+(2015, '2015-01-06', 'No Fighters',NULL , 'Mighty Streak',NULL),
+(2015, '2015-01-07', 'No Fighters',NULL , 'Lucky Flies',NULL),
+(2015, '2015-01-08', 'Water Bricks',NULL , 'No Fighters',NULL),
+(2015, '2015-01-09', 'Water Bricks',NULL , 'Vegetables',NULL),
+(2015, '2015-01-10', 'Water Bricks',NULL , 'Savages',NULL),
+(2015, '2015-01-11', 'Water Bricks',NULL , 'Engorged Bugs',NULL),
+(2015, '2015-01-12', 'Water Bricks',NULL , 'Ozone Champs',NULL),
+(2015, '2015-01-13', 'Water Bricks',NULL , 'Mighty Streak',NULL),
+(2015, '2015-01-15', 'Water Bricks',NULL , 'Lucky Flies',NULL),
+(2015, '2015-01-16', 'Vegetables',NULL , 'No Fighters',NULL),
+(2015, '2015-01-17', 'Vegetables',NULL , 'Water Bricks',NULL),
+(2015, '2015-01-18', 'Vegetables',NULL , 'Savages',NULL),
+(2015, '2015-01-19', 'Vegetables',NULL , 'Engorged Bugs',NULL),
+(2015, '2015-01-20', 'Vegetables',NULL , 'Ozone Champs',NULL),
+(2015, '2015-01-21', 'Vegetables',NULL , 'Mighty Streak',NULL),
+(2015, '2015-01-22', 'Vegetables',NULL , 'Lucky Flies',NULL),
+(2015, '2015-01-23', 'Savages',NULL , 'No Fighters',NULL),
+(2015, '2015-01-24', 'Savages',NULL , 'Water Bricks',NULL),
+(2015, '2015-01-25', 'Savages',NULL , 'Vegetables',NULL),
+(2015, '2015-01-26', 'Savages',NULL , 'Engorged Bugs',NULL),
+(2015, '2015-01-27', 'Savages',NULL , 'Ozone Champs',NULL),
+(2015, '2015-01-28', 'Savages',NULL , 'Mighty Streak',NULL),
+(2015, '2015-01-29', 'Savages',NULL , 'Lucky Flies',NULL),
+(2015, '2015-01-30', 'Engorged Bugs',NULL , 'No Fighters',NULL),
+(2015, '2015-01-31', 'Engorged Bugs',NULL , 'Water Bricks',NULL),
+(2015, '2015-02-01', 'Engorged Bugs',NULL , 'Vegetables',NULL),
+(2015, '2015-02-02', 'Engorged Bugs',NULL , 'Savages',NULL),
+(2015, '2015-02-03', 'Engorged Bugs',NULL , 'Ozone Champs',NULL),
+(2015, '2015-02-04', 'Engorged Bugs',NULL , 'Mighty Streak',NULL),
+(2015, '2015-02-05', 'Engorged Bugs',NULL , 'Lucky Flies',NULL),
+(2015, '2015-02-06', 'Ozone Champs',NULL , 'No Fighters',NULL),
+(2015, '2015-02-07', 'Ozone Champs',NULL , 'Water Bricks',NULL),
+(2015, '2015-02-08', 'Ozone Champs',NULL , 'Vegetables',NULL),
+(2015, '2015-02-09', 'Ozone Champs',NULL , 'Savages',NULL),
+(2015, '2015-02-10', 'Ozone Champs',NULL , 'Engorged Bugs',NULL),
+(2015, '2015-02-11', 'Ozone Champs',NULL , 'Mighty Streak',NULL),
+(2015, '2015-02-12', 'Ozone Champs',NULL , 'Lucky Flies',NULL),
+(2015, '2015-02-13', 'Mighty Streak',NULL , 'No Fighters',NULL),
+(2015, '2015-02-14', 'Mighty Streak',NULL , 'Water Bricks',NULL),
+(2015, '2015-02-15', 'Mighty Streak',NULL , 'Vegetables',NULL),
+(2015, '2015-02-16', 'Mighty Streak',NULL , 'Savages',NULL),
+(2015, '2015-02-17', 'Mighty Streak',NULL , 'Engorged Bugs',NULL),
+(2015, '2015-02-18', 'Mighty Streak',NULL , 'Ozone Champs',NULL),
+(2015, '2015-02-19', 'Mighty Streak',NULL , 'Lucky Flies',NULL),
+(2015, '2015-02-19', 'Lucky Flies',NULL , 'No Fighters',NULL),
+(2015, '2015-02-19', 'Lucky Flies',NULL , 'Water Bricks',NULL),
+(2015, '2015-02-19', 'Lucky Flies',NULL , 'Vegetables',NULL),
+(2015, '2015-02-19', 'Lucky Flies',NULL , 'Savages',NULL),
+(2015, '2015-02-19', 'Lucky Flies',NULL , 'Engorged Bugs',NULL),
+(2015, '2015-02-19', 'Lucky Flies',NULL , 'Ozone Champs',NULL),
+(2015, '2015-02-19', 'Lucky Flies',NULL , 'Mighty Streak',NULL);
+
+#3
+
+create table PastSeasons as select * from Season;
+
+#4
+
+update Season
+set Season = 2016
+where Season = 2015
+
+#5
+
+select * into outfile 'LAB_3_datafile.txt'
+
+fields terminated by ','
+
+from baseball.Season;
+
+#6
+
+load data infile 'LAB_3_datafile.txt' into table baseball.PastSeasons
+
+fields terminated by ','
+ enclosed by '"'
+
+

@@ -1,0 +1,38 @@
+--1
+
+use baseball
+
+--2
+
+show columns from teams;
+
+--3
+
+select tname, teamcode from teams;
+
+--4
+
+show columns from players;
+
+--5
+
+select * from players;
+
+--6
+
+select * from players
+where team = '78901';
+
+--7
+
+select team, count(*) as "# of players" from players group by team;
+
+--8
+
+select pcity as "City", count(*) as "# of players who live in" from players group by pcity;
+
+--9
+
+select lastname, team 
+from players  
+order by team, lastname;
