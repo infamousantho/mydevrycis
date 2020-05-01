@@ -1,0 +1,10 @@
+100-150 line items
+textbook and PMBOK Guide
+dependencies and add durations
+3 levels deep
+verb oriented task names
+predecessor relationships
+
+DO NOT LINK SUMMARY TASKS OR ASSIGN RESOURCES
+
+Tracking Gantt chart screen
