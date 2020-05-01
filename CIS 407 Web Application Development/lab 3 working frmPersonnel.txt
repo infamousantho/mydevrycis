@@ -1,0 +1,79 @@
+        Boolean validatedState = false;
+        //Set variables for dates
+        DateTime dt1;
+        DateTime dt2;
+
+        //Set lblError label to blank and set text box background colors to default
+        lblError.Text = "";
+        txtFirstName.BackColor = System.Drawing.Color.White;
+        txtLastName.BackColor = System.Drawing.Color.White;
+        txtPayRate.BackColor = System.Drawing.Color.White;
+        txtStartDate.BackColor = System.Drawing.Color.White;
+        txtEndDate.BackColor = System.Drawing.Color.White;
+
+        //Check if text boxes are empty
+        if (Request["txtFirstName"].ToString().Trim() == "")
+        {
+            txtFirstName.BackColor = System.Drawing.Color.Yellow;
+            lblError.Text = "The First Name must not be empty.";
+
+            validatedState = true;
+        }
+        if (Request["txtLastName"].ToString().Trim() == "")
+        {
+            txtFirstName.BackColor = System.Drawing.Color.Yellow;
+            lblError.Text += "\n The Last Name must not be empty.";
+
+            validatedState = true;
+        }
+        if (Request["txtPayRate"].ToString().Trim() == "")
+        {
+            txtFirstName.BackColor = System.Drawing.Color.Yellow;
+            lblError.Text += "\n The Pay Rate must not be empty.";
+
+            validatedState = true;
+        }
+        if (Request["txtStartDate"].ToString().Trim() == "")
+        {
+            txtFirstName.BackColor = System.Drawing.Color.Yellow;
+            lblError.Text += "\n The Start Date must not be empty.";
+
+            validatedState = true;
+        }
+
+        if (Request["txtEndDate"].ToString().Trim() == "")
+        {
+            txtFirstName.BackColor = System.Drawing.Color.Yellow;
+            lblError.Text += "\n The End Date must not be empty.";
+
+            validatedState = true;
+        }
+
+
+        if (Request["txtStartDate"].ToString().Trim() != "" & Request["txtEndDate"].ToString().Trim() != "")
+        {
+            //Store information entered for dates into variables
+            dt1 = DateTime.Parse(Request["txtStartDate"]);
+            dt2 = DateTime.Parse(Request["txtEndDate"]);
+
+            //Test if end date is after start date
+            if (DateTime.Compare(dt1, dt2) > 0)
+            {
+                txtStartDate.BackColor = System.Drawing.Color.Yellow;
+                txtEndDate.BackColor = System.Drawing.Color.Yellow;
+                lblError.Text += "\n The end date must be a later date than the start date.";
+
+                validatedState = true;
+            }
+        }
+
+        if (validatedState == false)
+        {
+            //Set session variables for all text boxes and transfer information to frmPersonnelVerified.aspx
+            Session["txtFirstName"] = txtFirstName.Text;
+            Session["txtLastName"] = txtLastName.Text;
+            Session["txtPayRate"] = txtPayRate.Text;
+            Session["txtStartDate"] = txtStartDate.Text;
+            Session["txtEndDate"] = txtEndDate.Text;
+            Response.Redirect("frmPersonnelVerified.aspx");
+        }
