@@ -1,0 +1,379 @@
+spool TEAM_D_TASK2.OUTPUT.TXT
+--Developed by: TEAM_D_TASK2_GROUP_Project_WK5
+
+
+--DROP STATEMENTS 
+
+DROP TABLE ChannelPackage CASCADE CONSTRAINTS PURGE; 
+DROP TABLE Schedule CASCADE CONSTRAINTS PURGE; 
+DROP TABLE Survey CASCADE CONSTRAINTS PURGE; 
+DROP TABLE Program CASCADE CONSTRAINTS PURGE; 
+DROP TABLE Channel CASCADE CONSTRAINTS PURGE; 
+DROP TABLE ChannelType CASCADE CONSTRAINTS PURGE; 
+DROP TABLE Rating CASCADE CONSTRAINTS PURGE; 
+DROP TABLE Billing CASCADE CONSTRAINTS PURGE;
+DROP TABLE Subscription CASCADE CONSTRAINTS PURGE;
+DROP TABLE Package CASCADE CONSTRAINTS PURGE; 
+DROP TABLE Supplier CASCADE CONSTRAINTS PURGE; 
+DROP TABLE Customer CASCADE CONSTRAINTS PURGE; 
+DROP TABLE Employee CASCADE CONSTRAINTS PURGE; 
+
+--CREATE STATEMENTS 
+
+CREATE TABLE  Employee
+(
+EmployeeID NUMBER(5) NOT NULL CONSTRAINT Employee_EmployeeID_PK PRIMARY KEY,
+EmployeeFName VARCHAR2(40) NOT NULL,
+EmployeeLName VARCHAR2(40) NOT NULL
+);
+
+CREATE TABLE  Customer
+(
+CustomerID NUMBER(5) NOT NULL CONSTRAINT Customer_CustomerID_PK PRIMARY KEY,
+CustomerFName VARCHAR2(40) NOT NULL,
+CustomerLName VARCHAR2(40) NOT NULL,
+CustomerPhone VARCHAR2(30) NOT NULL,
+CustomerStreet VARCHAR2(30),
+CustomerCity VARCHAR2(30),
+CustomerState CHAR(2),
+CustomerZip VARCHAR2(9),
+CustomerEmail VARCHAR2(60) NOT NULL,
+SignUp_Date DATE DEFAULT sysdate NOT NULL,
+CustomerStatus CHAR(1) NOT NULL,
+InactiveDate DATE,
+InactiveReason VARCHAR2(150),
+EmployeeID NUMBER(5) NOT NULL,
+CustomerBillingCycle CHAR(1) NOT NULL
+);
+
+CREATE TABLE  Supplier
+(
+SupplierID  NUMBER(5) NOT NULL CONSTRAINT Supplier_SupplierID_PK PRIMARY KEY,
+SupplierFName VARCHAR2(40) NOT NULL,
+SupplierLName VARCHAR2(40) NOT NULL,
+SupplierStreet VARCHAR2(30),
+SupplierCity VARCHAR2(30),
+SupplierState CHAR(2),
+SupplierZip VARCHAR2(9),
+SupplierContactName VARCHAR2(30),
+SupplierPhone VARCHAR2(20) NOT NULL
+);
+
+CREATE TABLE  Package
+(
+PackageID NUMBER(5) NOT NULL CONSTRAINT Package_PackageID_PK PRIMARY KEY,
+PackageName VARCHAR2(50) NOT NULL,
+PackagePrice NUMBER(8,2) NOT NULL
+);
+
+CREATE TABLE  Subscription
+(
+SubscriptionID NUMBER(5) NOT NULL CONSTRAINT Subscription_SubscriptionID_PK PRIMARY KEY,
+CustomerID NUMBER(5) NOT NULL,
+PackageID NUMBER(5) NOT NULL,
+StartDate DATE NOT NULL,
+EndDate DATE NOT NULL
+);
+
+CREATE TABLE  Billing
+(
+BillingID NUMBER(5) NOT NULL CONSTRAINT Billing_BillingID_PK PRIMARY KEY,
+BillingDate DATE NOT NULL,
+BillingPaidDate DATE,
+BillingDueAmount NUMBER(8,2) NOT NULL,
+BillingPaidAmount NUMBER(8,2),
+SubscriptionID NUMBER(5) NOT NULL,
+BillingDueDate DATE NOT NULL
+);
+
+
+CREATE TABLE  Rating
+(
+RatingID NUMBER(5) NOT NULL CONSTRAINT Rating_RatingID_PK PRIMARY KEY,
+RatingCode VARCHAR2(6) NOT NULL, 
+RatingDescription VARCHAR2(100)
+);
+
+CREATE TABLE  ChannelType
+(
+ChannelTypeID NUMBER(5) NOT NULL CONSTRAINT ChannelType_ChannelTypeID_PK PRIMARY KEY,
+ChannelTypeDesc VARCHAR2(50) NOT NULL
+);
+
+CREATE TABLE  Channel
+(
+ChannelID NUMBER(5) NOT NULL CONSTRAINT Channel_ChannelID_PK PRIMARY KEY,
+ChannelName  VARCHAR2(40) NOT NULL,
+ChannelNumber NUMBER(5) NOT NULL,
+ChannelTypeID NUMBER(5) NOT NULL
+);
+
+
+CREATE TABLE  Program
+(
+ProgramID NUMBER(5) NOT NULL CONSTRAINT Program_ProgramID_PK PRIMARY KEY,
+ProgramName VARCHAR2(40) NOT NULL, 
+ProgramLength NUMBER(4),
+ProgramDesc VARCHAR2(150),
+ChannelTypeID NUMBER(5) NOT NULL, 
+RatingID NUMBER(5),
+SupplierID NUMBER(5) NOT NULL 
+);
+
+
+CREATE TABLE  Survey
+(
+SurveyID NUMBER(5) NOT NULL CONSTRAINT Survey_SurveyID_PK PRIMARY KEY,
+CustomerID NUMBER(5) NOT NULL,
+ChannelID NUMBER(5) NOT NULL,
+SurveyDate DATE
+);
+
+CREATE TABLE  Schedule
+(
+ChannelID NUMBER(5) NOT NULL,
+ProgramID NUMBER(5) NOT NULL,
+ShowTime DATE NOT NULL
+);
+
+--Adding composite primary key for Schedule table
+ALTER TABLE Schedule add CONSTRAINT Schedule_ChannelID_ProgID_PK PRIMARY KEY (ChannelID,ProgramID,ShowTime);
+
+
+CREATE TABLE  ChannelPackage
+(
+ChannelID NUMBER(5) NOT NULL,
+PackageID NUMBER(5) NOT NULL
+);
+
+--Adding composite primary key for ChannelPackage table
+ALTER TABLE ChannelPackage add CONSTRAINT ChannelPack_ChanID_PackID_PK PRIMARY KEY (ChannelID,PackageID);
+
+--ADDING FOREIGN KEY CONSTRAINTS
+
+ALTER TABLE Customer ADD CONSTRAINT Customer_EmployeeID_FK FOREIGN KEY (EmployeeID) REFERENCES Employee(EmployeeID) ON DELETE CASCADE;
+ALTER TABLE Billing ADD CONSTRAINT Billing_SubscriptionID_FK FOREIGN KEY (SubscriptionID) REFERENCES Subscription(SubscriptionID) ON DELETE CASCADE;
+ALTER TABLE Subscription ADD CONSTRAINT Subscription_CustomerID_FK FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID) ON DELETE CASCADE;
+ALTER TABLE Subscription ADD CONSTRAINT Subscription_PackageID_FK FOREIGN KEY (PackageID) REFERENCES Package(PackageID) ON DELETE CASCADE;
+ALTER TABLE Channel ADD CONSTRAINT Channel_ChannelTypeID_FK FOREIGN KEY (ChannelTypeID) REFERENCES ChannelType(ChannelTypeID) ON DELETE CASCADE;
+ALTER TABLE Program ADD CONSTRAINT Program_ChannelTypeID_FK FOREIGN KEY (ChannelTypeID) REFERENCES ChannelType(ChannelTypeID) ON DELETE CASCADE;
+ALTER TABLE Program ADD CONSTRAINT Program_RatingID_FK FOREIGN KEY (RatingID) REFERENCES Rating(RatingID) ON DELETE CASCADE;
+ALTER TABLE Program ADD CONSTRAINT Program_SupplierID_FK FOREIGN KEY (SupplierID) REFERENCES Supplier(SupplierID) ON DELETE CASCADE;
+ALTER TABLE Survey ADD CONSTRAINT Survey_CustomerID_FK FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID) ON DELETE CASCADE;
+ALTER TABLE Survey ADD CONSTRAINT Survey_ChannelID_FK FOREIGN KEY (ChannelID) REFERENCES Channel(ChannelID) ON DELETE CASCADE;
+ALTER TABLE Schedule ADD CONSTRAINT Schedule_ChannelID_FK FOREIGN KEY (ChannelID) REFERENCES Channel(ChannelID) ON DELETE CASCADE;
+ALTER TABLE Schedule ADD CONSTRAINT Schedule_ProgramID_FK FOREIGN KEY (ProgramID) REFERENCES Program(ProgramID) ON DELETE CASCADE;
+ALTER TABLE ChannelPackage ADD CONSTRAINT ChannelPackage_ChannelID_FK FOREIGN KEY (ChannelID) REFERENCES Channel(ChannelID) ON DELETE CASCADE;
+ALTER TABLE ChannelPackage ADD CONSTRAINT ChannelPackage_PackageID_FK FOREIGN KEY (PackageID) REFERENCES Package(PackageID) ON DELETE CASCADE;
+
+
+ALTER TABLE Customer add CONSTRAINT Customer_CustomerStatus_CC CHECK (CustomerStatus IN ('A', 'I'));
+ALTER TABLE Customer add CONSTRAINT Customer_CustomerBC_CC CHECK (CustomerBillingCycle IN ('A', 'B'));
+
+
+--INSERT STATEMENTS
+
+INSERT INTO Employee VALUES (1, 'Mark', 'Jonathan') ;
+INSERT INTO Employee VALUES (2, 'Alison', 'Marine') ;
+INSERT INTO Employee VALUES (3, 'Steven', 'Cunnigham') ;
+INSERT INTO Employee VALUES (4, 'Markus', 'Jobs') ;
+INSERT INTO Employee VALUES (5, 'Gray', 'Mark') ;
+INSERT INTO Employee VALUES (6, 'Shantal', 'Michael') ;
+INSERT INTO Employee VALUES (7, 'Kathy', 'Hatcher') ;
+INSERT INTO Employee VALUES (8, 'Jerry', 'Waugh') ;
+
+INSERT INTO Customer VALUES (1, 'Steve', 'Auston', '(310) 348-3483', '564 Palm Avenue', 'Landis', 'CA', 92120, 'Steve.Auston', to_date('2011/02/11 00:01:00', 'yyyy/mm/dd hh24:mi:ss'), 'A', NULL, NULL, 4, 'B') ;
+INSERT INTO Customer VALUES (2, 'Delano', 'Gordon', '(310) 343-6776', '310 N. Spindrift Drive', 'Chesterfield', 'CA', 92120, 'Delano.Gordon@aol.com', to_date('2010/03/14 00:03:00', 'yyyy/mm/dd hh24:mi:ss'), 'A', NULL, NULL, 5, 'A') ;
+INSERT INTO Customer VALUES (3, 'Sullivan', 'Marie', '(310) 345-4302', '78 Omega Drive', 'Landis', 'CA', 92433, 'Sullivan.Marie@gmail.com', to_date('2008/07/11 00:22:00', 'yyyy/mm/dd hh24:mi:ss'), 'I', to_date('2008/09/11 00:22:00', 'yyyy/mm/dd hh24:mi:ss'), 'Moving to a different country', 3, 'B') ;
+INSERT INTO Customer VALUES (4, 'Martinez', 'Juan', '(310) 343-6767', 'First Avenue', 'Madin', 'CA', 92343, 'Martinez.Juan@aol.com', to_date('2011/08/23 00:09:00', 'yyyy/mm/dd hh24:mi:ss'), 'A', NULL, NULL, 4, 'A') ;
+INSERT INTO Customer VALUES (5, 'Jonathan', 'Robert', '(310) 302-4974', 'Linken Road', 'Madin', 'CA', 92342, 'Jonathan.Robert@ymail.com', to_date('2010/03/14 00:16:30', 'yyyy/mm/dd hh24:mi:ss'), 'I', to_date('2010/04/14 00:23:00', 'yyyy/mm/dd hh24:mi:ss'), 'Found something better', 2, 'B') ;
+INSERT INTO Customer VALUES (6, 'Venesa', 'Strong', '(310) 343-2920', '28 C5 spitville', 'Chesterfield', 'CA', 92343, 'Venesa.Strong@hotmail.com', to_date('2010/03/14 00:04:00', 'yyyy/mm/dd hh24:mi:ss'), 'A', NULL, NULL, 4, 'B') ;
+INSERT INTO Customer VALUES (7, 'Karel', 'Karez', '(310) 328-2912', 'Brick Fork Avenue', 'Landis', 'CA', 92347, 'Karel.Karez@gmail.com', to_date('2011/08/23 00:18:30', 'yyyy/mm/dd hh24:mi:ss'), 'I', to_date('2011/10/23 00:21:00', 'yyyy/mm/dd hh24:mi:ss'), 'Unspecified', 3, 'A') ;
+INSERT INTO Customer VALUES (8, 'Johny', 'Prince', '(310) 333-3438', 'Air Palm Avenue', 'Chesterfield', 'CA', 93834, 'Johny.Prince@hotmail.com', to_date('2010/08/24 00:10:00', 'yyyy/mm/dd hh24:mi:ss'), 'A', NULL, NULL, 7, 'A') ;
+
+INSERT INTO Supplier VALUES (1,'NBC', ' ', '10880 Wilshire Blvd # 1200', 'Los Angeles', 'CA', '', 'Jeff King', '(310) 369-5231');
+INSERT INTO Supplier VALUES (2,'ABC', ' ', '', 'Los Angeles', 'CA', '', 'Jack Caverisi', '(310) 840-9966');
+INSERT INTO Supplier VALUES (3,'FOX', ' ', '10960 Wilshire Blvd', 'Los Angeles', 'CA', '', 'Janis Carmikel', '(310) 235-5233');
+INSERT INTO Supplier VALUES (4,'WARNER', ' ', '3701 W Oak St', 'Burbank', 'CA', '', 'Simon Philips', '(310)532-6588');
+
+INSERT INTO Package VALUES(1, 'Movies Galore', 30.00);
+INSERT INTO Package VALUES(2, 'News Globe', 30.00);
+INSERT INTO Package VALUES(3, 'Total Watcher', 40.00);
+INSERT INTO Package VALUES(4, 'Couch Potato', 50.00);
+
+INSERT INTO Subscription VALUES (1, 8, 1,  to_date('2010/08/24 00:10:00', 'yyyy/mm/dd hh24:mi:ss'),  to_date('2010/10/24 00:10:00', 'yyyy/mm/dd hh24:mi:ss') ) ;
+INSERT INTO Subscription VALUES (2, 8, 2,  to_date('2010/10/24 00:10:00', 'yyyy/mm/dd hh24:mi:ss'),  to_date('2010/12/24 00:10:00', 'yyyy/mm/dd hh24:mi:ss') ) ;
+INSERT INTO Subscription VALUES (3, 8, 3,  to_date('2010/12/24 00:10:00', 'yyyy/mm/dd hh24:mi:ss'),  to_date('2011/02/24 00:10:00', 'yyyy/mm/dd hh24:mi:ss') ) ;
+INSERT INTO Subscription VALUES (4, 7, 4,  to_date('2011/11/17 00:10:00', 'yyyy/mm/dd hh24:mi:ss'),  to_date('2011/12/17 00:10:00', 'yyyy/mm/dd hh24:mi:ss') ) ;
+INSERT INTO Subscription VALUES (5, 6, 3,  to_date('2009/05/06 00:10:00', 'yyyy/mm/dd hh24:mi:ss'),  to_date('2011/06/06 00:10:00', 'yyyy/mm/dd hh24:mi:ss') ) ;
+INSERT INTO Subscription VALUES (6, 5, 2,  to_date('2010/03/06 00:10:00', 'yyyy/mm/dd hh24:mi:ss'),  to_date('2010/04/06 00:10:00', 'yyyy/mm/dd hh24:mi:ss') ) ;
+INSERT INTO Subscription VALUES (7, 4, 1,  to_date('2011/08/30 00:10:00', 'yyyy/mm/dd hh24:mi:ss'),  to_date('2012/09/30 00:10:00', 'yyyy/mm/dd hh24:mi:ss') ) ;
+INSERT INTO Subscription VALUES (8, 3, 2,  to_date('2008/07/11 00:10:00', 'yyyy/mm/dd hh24:mi:ss'),  to_date('2008/08/11 00:10:00', 'yyyy/mm/dd hh24:mi:ss') ) ;
+INSERT INTO Subscription VALUES (9, 2, 1,  to_date('2010/03/14 00:10:00', 'yyyy/mm/dd hh24:mi:ss'),  to_date('2010/04/14 00:10:00', 'yyyy/mm/dd hh24:mi:ss') ) ;
+INSERT INTO Subscription VALUES (10, 1, 2,  to_date('2011/02/11 00:10:00', 'yyyy/mm/dd hh24:mi:ss'),  to_date('2012/03/11 00:10:00', 'yyyy/mm/dd hh24:mi:ss') ) ;
+INSERT INTO Subscription VALUES (11, 1, 3,  to_date('2012/04/17 00:10:00', 'yyyy/mm/dd hh24:mi:ss'),  to_date('2012/05/17 00:10:00', 'yyyy/mm/dd hh24:mi:ss') ) ;
+INSERT INTO Subscription VALUES (12, 1, 4,  to_date('2012/06/18 00:10:00', 'yyyy/mm/dd hh24:mi:ss'),  to_date('2012/07/18 00:10:00', 'yyyy/mm/dd hh24:mi:ss') ) ;
+
+INSERT INTO Billing VALUES (1, to_date('2010/09/01 00:10:00', 'yyyy/mm/dd hh24:mi:ss') ,  to_date('2010/09/19 00:10:00', 'yyyy/mm/dd hh24:mi:ss'), 30,30 ,1, to_date('2010/09/24 00:10:00', 'yyyy/mm/dd hh24:mi:ss') ) ;
+INSERT INTO Billing VALUES (2, to_date('2010/10/01 00:10:00', 'yyyy/mm/dd hh24:mi:ss') ,   to_date('2010/10/15 00:10:00', 'yyyy/mm/dd hh24:mi:ss'), 30,30 ,1, to_date('2010/10/24 00:10:00', 'yyyy/mm/dd hh24:mi:ss') ) ;
+INSERT INTO Billing VALUES (3, to_date('2010/11/01 00:10:00', 'yyyy/mm/dd hh24:mi:ss') ,   to_date('2010/11/17 00:10:00', 'yyyy/mm/dd hh24:mi:ss'), 30,30 ,1, to_date('2010/11/24 00:10:00', 'yyyy/mm/dd hh24:mi:ss') ) ;
+INSERT INTO Billing VALUES (4, to_date('2010/11/01 00:10:00', 'yyyy/mm/dd hh24:mi:ss') ,   to_date('2010/11/20 00:10:00', 'yyyy/mm/dd hh24:mi:ss'), 30,30 ,2, to_date('2010/11/24 00:10:00', 'yyyy/mm/dd hh24:mi:ss') ) ;
+INSERT INTO Billing VALUES (5, to_date('2010/12/01 00:10:00', 'yyyy/mm/dd hh24:mi:ss') ,   to_date('2010/12/15 00:10:00', 'yyyy/mm/dd hh24:mi:ss'), 30,30 ,2, to_date('2010/12/24 00:10:00', 'yyyy/mm/dd hh24:mi:ss') ) ;
+INSERT INTO Billing VALUES (6, to_date('2011/01/01 00:10:00', 'yyyy/mm/dd hh24:mi:ss') ,   to_date('2011/01/17 00:10:00', 'yyyy/mm/dd hh24:mi:ss'), 30,30 ,2, to_date('2011/01/24 00:10:00', 'yyyy/mm/dd hh24:mi:ss') ) ;
+INSERT INTO Billing VALUES (7, to_date('2011/01/01 00:10:00', 'yyyy/mm/dd hh24:mi:ss') ,   to_date('2011/01/05 00:10:00', 'yyyy/mm/dd hh24:mi:ss'), 40,40 ,3, to_date('2011/01/24 00:10:00', 'yyyy/mm/dd hh24:mi:ss') ) ;
+INSERT INTO Billing VALUES (8, to_date('2011/02/01 00:10:00', 'yyyy/mm/dd hh24:mi:ss') ,   to_date('2011/02/14 00:10:00', 'yyyy/mm/dd hh24:mi:ss'), 40,40 ,3, to_date('2011/02/24 00:10:00', 'yyyy/mm/dd hh24:mi:ss') ) ;
+INSERT INTO Billing VALUES (9,  to_date('2011/03/01 00:10:00', 'yyyy/mm/dd hh24:mi:ss'),   to_date('2011/12/09 00:10:00', 'yyyy/mm/dd hh24:mi:ss'), 40,40 ,3, to_date('2011/03/24 00:10:00', 'yyyy/mm/dd hh24:mi:ss') ) ;
+INSERT INTO Billing VALUES (10,  to_date('2011/12/01 00:10:00', 'yyyy/mm/dd hh24:mi:ss'),  to_date('2011/12/23 00:10:00', 'yyyy/mm/dd hh24:mi:ss'), 50,50 ,4, to_date('2011/12/24 00:10:00', 'yyyy/mm/dd hh24:mi:ss') ) ;
+INSERT INTO Billing VALUES (11,  to_date('2012/01/01 00:10:00', 'yyyy/mm/dd hh24:mi:ss'),  to_date('2012/01/05 00:10:00', 'yyyy/mm/dd hh24:mi:ss'), 50,50 ,4, to_date('2012/01/24 00:10:00', 'yyyy/mm/dd hh24:mi:ss') ) ;
+INSERT INTO Billing VALUES (12,  to_date('2009/06/15 00:10:00', 'yyyy/mm/dd hh24:mi:ss'),  to_date('2009/07/09 00:10:00', 'yyyy/mm/dd hh24:mi:ss'), 50,50 ,5, to_date('2009/07/09 00:10:00', 'yyyy/mm/dd hh24:mi:ss') ) ;
+INSERT INTO Billing VALUES (13,  to_date('2009/07/15 00:10:00', 'yyyy/mm/dd hh24:mi:ss'),  to_date('2009/08/15 00:10:00', 'yyyy/mm/dd hh24:mi:ss'), 50,50 ,5, to_date('2009/08/09 00:10:00', 'yyyy/mm/dd hh24:mi:ss') ) ;
+INSERT INTO Billing VALUES (14,  to_date('2010/03/15 00:10:00', 'yyyy/mm/dd hh24:mi:ss'),  to_date('2010/04/01 00:10:00', 'yyyy/mm/dd hh24:mi:ss'), 30,30 ,6, to_date('2010/04/09 00:10:00', 'yyyy/mm/dd hh24:mi:ss') ) ;
+INSERT INTO Billing VALUES (15,  to_date('2010/04/15 00:10:00', 'yyyy/mm/dd hh24:mi:ss'),  to_date('2010/05/03 00:10:00', 'yyyy/mm/dd hh24:mi:ss'), 30,30 ,6, to_date('2010/05/09 00:10:00', 'yyyy/mm/dd hh24:mi:ss') ) ;
+INSERT INTO Billing VALUES (16,  to_date('2011/09/01 00:10:00', 'yyyy/mm/dd hh24:mi:ss'),  to_date('2011/09/21 00:10:00', 'yyyy/mm/dd hh24:mi:ss'), 30,30 ,7, to_date('2011/09/24 00:10:00', 'yyyy/mm/dd hh24:mi:ss') ) ;
+INSERT INTO Billing VALUES (17,  to_date('2011/10/01 00:10:00', 'yyyy/mm/dd hh24:mi:ss'),  to_date('2011/10/22 00:10:00', 'yyyy/mm/dd hh24:mi:ss'), 30,30 ,7, to_date('2011/10/24 00:10:00', 'yyyy/mm/dd hh24:mi:ss') ) ;
+INSERT INTO Billing VALUES (18,  to_date('2008/07/15 00:10:00', 'yyyy/mm/dd hh24:mi:ss'),  to_date('2008/08/02 00:10:00', 'yyyy/mm/dd hh24:mi:ss'), 30,30 ,8, to_date('2008/08/09 00:10:00', 'yyyy/mm/dd hh24:mi:ss') ) ;
+INSERT INTO Billing VALUES (19,  to_date('2008/08/15 00:10:00', 'yyyy/mm/dd hh24:mi:ss'),  to_date('2008/09/04 00:10:00', 'yyyy/mm/dd hh24:mi:ss'), 30,30 ,8, to_date('2008/09/09 00:10:00', 'yyyy/mm/dd hh24:mi:ss') ) ;
+INSERT INTO Billing VALUES (20,  to_date('2010/03/15 00:10:00', 'yyyy/mm/dd hh24:mi:ss'),  to_date('2010/04/06 00:10:00', 'yyyy/mm/dd hh24:mi:ss'), 30,30 ,9, to_date('2010/04/09 00:10:00', 'yyyy/mm/dd hh24:mi:ss') ) ;
+INSERT INTO Billing VALUES (21,  to_date('2010/04/15 00:10:00', 'yyyy/mm/dd hh24:mi:ss'),  to_date('2010/05/07 00:10:00', 'yyyy/mm/dd hh24:mi:ss'), 30,30 ,9, to_date('2010/05/09 00:10:00', 'yyyy/mm/dd hh24:mi:ss') ) ;
+INSERT INTO Billing VALUES (22,  to_date('2011/02/15 00:10:00', 'yyyy/mm/dd hh24:mi:ss'),  to_date('2011/03/01 00:10:00', 'yyyy/mm/dd hh24:mi:ss'), 30,30 ,10, to_date('2011/03/09 00:10:00', 'yyyy/mm/dd hh24:mi:ss') ) ;
+INSERT INTO Billing VALUES (23,  to_date('2011/03/15 00:10:00', 'yyyy/mm/dd hh24:mi:ss'),  to_date('2011/04/02 00:10:00', 'yyyy/mm/dd hh24:mi:ss'), 30,30 ,10, to_date('2011/04/09 00:10:00', 'yyyy/mm/dd hh24:mi:ss') ) ;
+INSERT INTO Billing VALUES (24,  to_date('2012/05/01 00:10:00', 'yyyy/mm/dd hh24:mi:ss'),  to_date('2012/05/20 00:10:00', 'yyyy/mm/dd hh24:mi:ss'), 40,40 ,11, to_date('2012/05/24 00:10:00', 'yyyy/mm/dd hh24:mi:ss') ) ;
+INSERT INTO Billing VALUES (25,  to_date('2012/06/01 00:10:00', 'yyyy/mm/dd hh24:mi:ss'),  to_date('2012/06/18 00:10:00', 'yyyy/mm/dd hh24:mi:ss'), 40,40 ,11, to_date('2011/06/24 00:10:00', 'yyyy/mm/dd hh24:mi:ss') ) ;
+INSERT INTO Billing VALUES (26,  to_date('2012/07/01 00:10:00', 'yyyy/mm/dd hh24:mi:ss'),  to_date('2012/07/18 00:10:00', 'yyyy/mm/dd hh24:mi:ss'), 50,50 ,12, to_date('2012/07/24 00:10:00', 'yyyy/mm/dd hh24:mi:ss') ) ;
+INSERT INTO Billing VALUES (27,  to_date('2012/08/01 00:10:00', 'yyyy/mm/dd hh24:mi:ss'),  to_date('2012/08/12 00:10:00', 'yyyy/mm/dd hh24:mi:ss'), 50,50 ,12, to_date('2012/08/24 00:10:00', 'yyyy/mm/dd hh24:mi:ss') ) ;
+
+INSERT INTO Rating VALUES (1,'G','General Exhibition');
+INSERT INTO Rating VALUES (2,'MA','Mature Audiences Recommended');
+INSERT INTO Rating VALUES (3,'PG','Parental Guidance');
+INSERT INTO Rating VALUES (4,'R','Restricted – Adults Only');
+INSERT INTO Rating VALUES (5,'M','Mature Audience 15+');
+
+INSERT INTO ChannelType VALUES(1, 'Movie');
+INSERT INTO ChannelType VALUES(2, 'News');
+INSERT INTO ChannelType VALUES(3, 'Lifestyle');
+INSERT INTO ChannelType VALUES(4, 'Documentary');
+INSERT INTO ChannelType VALUES(5, 'Sports');
+
+INSERT INTO Channel VALUES(1, 'HBO Movies', 1, 1);
+INSERT INTO Channel VALUES(2, 'Star World', 2, 1);
+INSERT INTO Channel VALUES(3, 'Star News', 3, 2);
+INSERT INTO Channel VALUES(4, 'News World', 4, 2);
+INSERT INTO Channel VALUES(5, 'Fashion', 5, 3);
+INSERT INTO Channel VALUES(6, 'Style In', 6, 3);
+INSERT INTO Channel VALUES(7, 'Discovery', 7, 4);
+INSERT INTO Channel VALUES(8, 'Innovate', 8, 4);
+INSERT INTO Channel VALUES(9, 'Star Sports', 9, 5);
+INSERT INTO Channel VALUES(10, 'Sports World', 10, 5);
+
+INSERT INTO Program VALUES (1, 'Sale of the Year', 24, 'Game Show Lifestyle', 3, 1,1);
+INSERT INTO Program VALUES (2, 'Opera by the Nile', 240, 'Luciano Pavorotti sings opera on the Nile', 4, 1,1);
+INSERT INTO Program VALUES (3, 'Fly Killers are Back', 175, 'Flies attack the city once again.', 1, 2, 1);
+INSERT INTO Program VALUES (4, 'NBC Tonight', 360, 'News from around the world', 2, 3,1);
+INSERT INTO Program VALUES (5, 'The Shopping Show', 120, 'The sites to see when you shop online', 3, 1,1);
+INSERT INTO Program VALUES (6, 'Angel Fire', 120, 'Angel is back on the streets', 1, 4, 1);
+INSERT INTO Program VALUES (7, 'Lawn Bowl Championships', 400, 'Live from Canberra', 5, 1,1);
+INSERT INTO Program VALUES (8, 'Mud Wrestling', 120,'The mud pits come alive for the muddy challenge', 5, 5, 1);
+INSERT INTO Program VALUES (9, 'Talk Show', 120, 'Talk Show with James', 2, 2,3);
+INSERT INTO Program VALUES (10, 'News Discussion', 120, 'General overall of Todays happening', 2, 2, 3);
+INSERT INTO Program VALUES (11, 'Morning News', 150, 'Detailed News Session', 2, 2,2);
+INSERT INTO Program VALUES (12, 'Critical Analysis', 120,'Critical analysis of polotics', 2, 2, 2);
+INSERT INTO Program VALUES (13, 'Starry Wars the Trilogy', 120, 'Science Fiction epic about the generation of a brave new world', 1,2,4);
+INSERT INTO Program VALUES (14, 'Gomer Piles the Hero', 80, 'Comedy showing the advantages of being an army sergeant', 1,3,3);
+INSERT INTO Program VALUES (15, 'Twinkle Toes in Paris', 90, 'Romantic Drama about a Scottish Ballet Dancer making his fortune', 1,2,2);
+INSERT INTO Program VALUES (16, 'Segall in New York', 80, 'Horror Action: Terrorists have taken over New York Cemetery. Can it be brought back under control?', 1,4,4);
+INSERT INTO Program VALUES (17, 'Fantasia', 180, 'Disney Favorite	General Exhibition', 1,1,4);
+INSERT INTO Program VALUES (18, 'Dances with Fairies', 90, 'New age movie showing the interaction of humans in the afterlife', 1,2,3);
+INSERT INTO Program VALUES (19, 'Speed 34', 120, 'The Space Shuttle is taken over by aliens. Bruce Willis to fix the problem', 1,5,2);
+INSERT INTO Program VALUES (20, 'Prettier Woman', 240, 'Drama: A woman learns to deal with the truth in her life', 1,5,4);
+
+INSERT INTO Survey VALUES (1, 8, 2, to_date('2010/09/21 00:10:00', 'yyyy/mm/dd hh24:mi:ss'));
+INSERT INTO Survey VALUES (2, 8, 4, to_date('2010/10/01 00:10:00', 'yyyy/mm/dd hh24:mi:ss'));
+INSERT INTO Survey VALUES (3, 8, 3, to_date('2010/10/01 00:10:00', 'yyyy/mm/dd hh24:mi:ss'));
+INSERT INTO Survey VALUES (4, 1, 5, to_date('2012/07/18 00:10:00', 'yyyy/mm/dd hh24:mi:ss'));
+INSERT INTO Survey VALUES (5, 1, 8, to_date('2011/03/11 00:10:00', 'yyyy/mm/dd hh24:mi:ss'));
+INSERT INTO Survey VALUES (6, 1, 7, to_date('2012/05/17 00:10:00', 'yyyy/mm/dd hh24:mi:ss'));
+INSERT INTO Survey VALUES (7, 2, 6, to_date('2010/02/12 00:10:00', 'yyyy/mm/dd hh24:mi:ss'));
+INSERT INTO Survey VALUES (8, 3, 4, to_date('2008/07/29 00:10:00', 'yyyy/mm/dd hh24:mi:ss'));
+INSERT INTO Survey VALUES (9, 4, 1, to_date('2011/09/20 00:10:00', 'yyyy/mm/dd hh24:mi:ss'));
+INSERT INTO Survey VALUES (10, 5, 1, to_date('2010/04/06 00:10:00', 'yyyy/mm/dd hh24:mi:ss'));
+INSERT INTO Survey VALUES (11, 6, 8, to_date('2010/03/16 00:10:00', 'yyyy/mm/dd hh24:mi:ss'));
+INSERT INTO Survey VALUES (12, 6, 7, to_date('2010/03/30 00:10:00', 'yyyy/mm/dd hh24:mi:ss'));
+
+INSERT INTO Schedule VALUES (5, 1, to_date('2012/01/25 00:01:00', 'yyyy/mm/dd hh24:mi:ss')); 
+INSERT INTO Schedule VALUES (7, 2, to_date('2012/01/25 12:30:00', 'yyyy/mm/dd hh24:mi:ss')); 
+INSERT INTO Schedule VALUES (1, 3, to_date('2012/01/25 02:45:00', 'yyyy/mm/dd hh24:mi:ss')); 
+INSERT INTO Schedule VALUES (4, 4, to_date('2012/01/25 04:40:00', 'yyyy/mm/dd hh24:mi:ss')); 
+INSERT INTO Schedule VALUES (6, 5, to_date('2012/01/25 13:01:00', 'yyyy/mm/dd hh24:mi:ss')); 
+INSERT INTO Schedule VALUES (2, 6, to_date('2012/01/25 15:50:00', 'yyyy/mm/dd hh24:mi:ss')); 
+INSERT INTO Schedule VALUES (9, 7, to_date('2012/01/25 16:01:00', 'yyyy/mm/dd hh24:mi:ss')); 
+INSERT INTO Schedule VALUES (1, 8, to_date('2012/01/25 08:10:00', 'yyyy/mm/dd hh24:mi:ss')); 
+INSERT INTO Schedule VALUES (6, 1, to_date('2012/01/26 12:01:00', 'yyyy/mm/dd hh24:mi:ss')); 
+INSERT INTO Schedule VALUES (8, 2, to_date('2012/01/26 01:40:00', 'yyyy/mm/dd hh24:mi:ss')); 
+INSERT INTO Schedule VALUES (2, 3, to_date('2012/01/26 08:25:00', 'yyyy/mm/dd hh24:mi:ss')); 
+INSERT INTO Schedule VALUES (3, 4, to_date('2012/01/26 04:30:00', 'yyyy/mm/dd hh24:mi:ss')); 
+INSERT INTO Schedule VALUES (5, 5, to_date('2012/01/26 13:10:00', 'yyyy/mm/dd hh24:mi:ss')); 
+INSERT INTO Schedule VALUES (1, 6, to_date('2012/01/26 15:40:00', 'yyyy/mm/dd hh24:mi:ss')); 
+INSERT INTO Schedule VALUES (10,7, to_date('2012/01/26 06:08:00', 'yyyy/mm/dd hh24:mi:ss')); 
+INSERT INTO Schedule VALUES (2, 8, to_date('2012/01/26 22:15:00', 'yyyy/mm/dd hh24:mi:ss')); 
+INSERT INTO Schedule VALUES (3, 9, to_date('2012/01/27 13:10:00', 'yyyy/mm/dd hh24:mi:ss')); 
+INSERT INTO Schedule VALUES (4, 10, to_date('2012/01/27 15:40:00', 'yyyy/mm/dd hh24:mi:ss')); 
+INSERT INTO Schedule VALUES (3, 11, to_date('2012/01/27 06:08:00', 'yyyy/mm/dd hh24:mi:ss')); 
+INSERT INTO Schedule VALUES (4, 12, to_date('2012/01/27 22:15:00', 'yyyy/mm/dd hh24:mi:ss')); 
+INSERT INTO Schedule VALUES (1, 13, to_date('2012/07/23 01:00:00', 'yyyy/mm/dd hh24:mi:ss')); 
+INSERT INTO Schedule VALUES (1, 14, to_date('2012/07/23 05:30:00', 'yyyy/mm/dd hh24:mi:ss')); 
+INSERT INTO Schedule VALUES (1, 15, to_date('2012/07/23 14:00:00', 'yyyy/mm/dd hh24:mi:ss')); 
+INSERT INTO Schedule VALUES (1, 16, to_date('2012/07/23 17:00:00', 'yyyy/mm/dd hh24:mi:ss')); 
+INSERT INTO Schedule VALUES (2, 17, to_date('2012/07/23 01:55:00', 'yyyy/mm/dd hh24:mi:ss')); 
+INSERT INTO Schedule VALUES (2, 18, to_date('2012/07/23 04:30:00', 'yyyy/mm/dd hh24:mi:ss')); 
+INSERT INTO Schedule VALUES (2, 19, to_date('2012/07/23 20:30:00', 'yyyy/mm/dd hh24:mi:ss')); 
+INSERT INTO Schedule VALUES (2, 20, to_date('2012/07/23 23:30:00', 'yyyy/mm/dd hh24:mi:ss')); 
+
+INSERT INTO ChannelPackage VALUES (1,1);
+INSERT INTO ChannelPackage VALUES (2,1);
+INSERT INTO ChannelPackage VALUES (3,1);
+INSERT INTO ChannelPackage VALUES (6,1);
+INSERT INTO ChannelPackage VALUES (7,1);
+INSERT INTO ChannelPackage VALUES (9,1);
+INSERT INTO ChannelPackage VALUES (1,2);
+INSERT INTO ChannelPackage VALUES (3,2);
+INSERT INTO ChannelPackage VALUES (4,2);
+INSERT INTO ChannelPackage VALUES (6,2);
+INSERT INTO ChannelPackage VALUES (7,2);
+INSERT INTO ChannelPackage VALUES (9,2);
+INSERT INTO ChannelPackage VALUES (1,3);
+INSERT INTO ChannelPackage VALUES (2,3);
+INSERT INTO ChannelPackage VALUES (3,3);
+INSERT INTO ChannelPackage VALUES (6,3);
+INSERT INTO ChannelPackage VALUES (7,3);
+INSERT INTO ChannelPackage VALUES (8,3);
+INSERT INTO ChannelPackage VALUES (9,3);
+INSERT INTO ChannelPackage VALUES (10,3);
+INSERT INTO ChannelPackage VALUES (1,4);
+INSERT INTO ChannelPackage VALUES (2,4);
+INSERT INTO ChannelPackage VALUES (3,4);
+INSERT INTO ChannelPackage VALUES (4,4);
+INSERT INTO ChannelPackage VALUES (5,4);
+INSERT INTO ChannelPackage VALUES (6,4);
+INSERT INTO ChannelPackage VALUES (7,4);
+INSERT INTO ChannelPackage VALUES (8,4);
+INSERT INTO ChannelPackage VALUES (9,4);
+INSERT INTO ChannelPackage VALUES (10,4);
+
+
+--SELECT STATEMENTS
+
+select * from Package;
+Select * from ChannelType;
+select * from Channel ;
+SELECT * FROM ChannelPackage;
+SELECT * FROM Rating;
+SELECT * FROM Supplier;
+SELECT * FROM Program;
+SELECT * FROM Schedule;
+SELECT * FROM Employee;
+SELECT * FROM Customer;
+SELECT * FROM Subscription;
+SELECT * FROM Survey;
+SELECT * FROM Billing;
+
+spool off

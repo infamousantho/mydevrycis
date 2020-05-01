@@ -1,0 +1,91 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CIS170B_Lab5A
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            string[] playerName = new string[100];
+            double[] score = new double[100];
+            int numPlayers = 0;
+            double averageScore;
+
+          
+
+            
+            InputData(ref playerName, ref score, ref numPlayers);
+
+            DisplayPlayerData(playerName, score, numPlayers);
+
+            averageScore = CalculateAverageScore(score, numPlayers);
+
+            DisplayBelowAverage(playerName, score, numPlayers, averageScore);
+            
+            Console.WriteLine("\n\nPress any key to exit...");
+            Console.ReadKey();
+
+        }
+
+        static void InputData(ref string[] playerName, ref double[] score, ref int numPlayers)
+        {
+            while (numPlayers < playerName.Length)
+            {
+                Console.Write("Enter Player Name (Q to quit): ");
+                playerName[numPlayers] = Console.ReadLine();
+
+                if (playerName[numPlayers] == "Q" || playerName[numPlayers] == "q")
+                {
+                    break;
+                }
+                Console.Write("Enter player's score: ");
+                score[numPlayers] = Convert.ToDouble(Console.ReadLine());
+                numPlayers++;
+            }
+            
+        }
+
+        static void DisplayPlayerData(string[] locPlayerName, double[] locScore, int totalPlayers)
+        {
+            Console.WriteLine("\nPlayer Name\t\tScore\n");
+            for (int i = 0; i < totalPlayers; i++)
+            {
+                Console.WriteLine(locPlayerName[i] + "\t\t\t" + locScore[i] + "\n");
+            }
+        }
+
+        static double CalculateAverageScore(double[] locScore, int totalPlayers)
+        {
+            double totalScore = 0, avgScore = 0;
+
+            for (int i = 0; i < totalPlayers; i++)
+            {
+                totalScore += locScore[i];
+            }
+            avgScore = totalScore / totalPlayers;
+            Console.WriteLine("\nAverage Score: " + avgScore);
+            return avgScore;
+        }
+
+
+        static void DisplayBelowAverage(string[] playerName, double[] score, int totalPlayers, double averageScore)
+        {
+            Console.WriteLine("\n\nPlayers who scored below average\n");
+            Console.WriteLine("\nPlayer Name\t\tScore\n");
+            for (int i = 0; i < totalPlayers; i++)
+            {
+                if (score[i] < averageScore)
+                {
+                    Console.WriteLine("\n{0} \t\t {1}", playerName[i], score[i]);
+                }
+            }
+        }
+
+        
+
+    }
+}

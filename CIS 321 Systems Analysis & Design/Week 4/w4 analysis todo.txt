@@ -1,0 +1,5 @@
+1. Complete Visio Tutorial
+2. Entity Definition Matrix (1:02)
+3. Context Data Model (Figure 3.1 from WK 3)
+
+crows feet = many

@@ -1,0 +1,432 @@
+SQL> @v:\cis336\Meunier_Lab3command.txt
+SQL> --Anthony Meunier
+SQL> --Lab 3
+SQL> 
+SQL> SET ECHO ON
+SQL> SET LINESIZE 150
+SQL> SET PAGESIZE 50
+SQL> 
+SQL> 
+SQL> DROP TABLE ENROLLMENT CASCADE CONSTRAINTS PURGE;
+
+Table dropped.
+
+SQL> 
+SQL> DROP TABLE COURSE_SECTION CASCADE CONSTRAINTS PURGE;
+
+Table dropped.
+
+SQL> 
+SQL> DROP TABLE COURSE CASCADE CONSTRAINTS PURGE;
+
+Table dropped.
+
+SQL> 
+SQL> DROP TABLE TERM CASCADE CONSTRAINTS PURGE;
+
+Table dropped.
+
+SQL> 
+SQL> DROP TABLE STUDENT CASCADE CONSTRAINTS PURGE;
+
+Table dropped.
+
+SQL> 
+SQL> DROP TABLE FACULTY CASCADE CONSTRAINTS PURGE;
+
+Table dropped.
+
+SQL> 
+SQL> DROP TABLE LOCATION CASCADE CONSTRAINTS PURGE;
+
+Table dropped.
+
+SQL> 
+SQL> 
+SQL> CREATE TABLE LOCATION
+  2  (
+  3  Locid NUMBER(5) NOT NULL CONSTRAINT LOCATION_Locid_PK PRIMARY
+  4  KEY,
+  5  Bldg_Code VARCHAR2(10) NOT NULL,
+  6  Room VARCHAR2(6) NOT NULL,
+  7  Capacity NUMBER(5)
+  8  );
+
+Table created.
+
+SQL> 
+SQL> CREATE TABLE FACULTY
+  2  (
+  3  Fid NUMBER(4) NOT NULL CONSTRAINT FACULTY_Fid_PK PRIMARY KEY,
+  4  Flname VARCHAR2(25) NOT NULL,
+  5  Ffname VARCHAR2(25) NOT NULL,
+  6  Fmi CHAR(1),
+  7  Fphone NUMBER(10),
+  8  F_rank VARCHAR2(4),
+  9  F_pin NUMBER(4)
+ 10  );
+
+Table created.
+
+SQL> 
+SQL> CREATE TABLE STUDENT
+  2  (
+  3  Sid NUMBER(5) NOT NULL CONSTRAINT STUDENT_Sid_PK PRIMARY KEY,
+  4  Slname VARCHAR2(25) NOT NULL,
+  5  Sfname VARCHAR2(25) NOT NULL,
+  6  Smi CHAR(1),
+  7  Saddr VARCHAR2(30),
+  8  Scity VARCHAR2(30),
+  9  Sstate CHAR(2),
+ 10  Szip NUMBER(9),
+ 11  Sphone NUMBER(10) NOT NULL,
+ 12  Sclass CHAR(2),
+ 13  Sdob DATE NOT NULL,
+ 14  S_pin NUMBER(4) NOT NULL,
+ 15  Fid NUMBER(4)
+ 16  );
+
+Table created.
+
+SQL> 
+SQL> CREATE TABLE TERM
+  2  (
+  3  Termid NUMBER(5) NOT NULL CONSTRAINT TERM_Termid_PK PRIMARY KEY,
+  4  Tdesc VARCHAR2(20) NOT NULL,
+  5  Status VARCHAR2(20) NOT NULL
+  6  );
+
+Table created.
+
+SQL> 
+SQL> CREATE TABLE COURSE
+  2  (
+  3  Cid NUMBER(6) NOT NULL CONSTRAINT COURSE_Cid_PK PRIMARY KEY,
+  4  Callid VARCHAR2(10) NOT NULL,
+  5  Cname VARCHAR2(30) NOT NULL,
+  6  Ccredit NUMBER(2)
+  7  );
+
+Table created.
+
+SQL> 
+SQL> CREATE TABLE COURSE_SECTION
+  2  (
+  3  Csecid NUMBER(8) NOT NULL CONSTRAINT COURSE_SECTION_Csecid_PK PRIMARY KEY,
+  4  Cid NUMBER(6) NOT NULL,
+  5  Termid NUMBER(5) NOT NULL,
+  6  Secnum NUMBER(2) NOT NULL,
+  7  Fid NUMBER(4),
+  8  Day VARCHAR2(10),
+  9  Locid NUMBER(5),
+ 10  Maxenrl NUMBER(4) NOT NULL,
+ 11  Currenrl NUMBER(4) NOT NULL
+ 12  );
+
+Table created.
+
+SQL> 
+SQL> CREATE TABLE ENROLLMENT
+  2  (
+  3  Sid NUMBER(5) NOT NULL,
+  4  Csecid NUMBER(8) NOT NULL,
+  5  Grade CHAR(1)
+  6  );
+
+Table created.
+
+SQL> 
+SQL> 
+SQL> ALTER TABLE STUDENT
+  2  ADD CONSTRAINT fk_STUDENT_Fid FOREIGN KEY (Fid)
+  3  REFERENCES FACULTY;
+
+Table altered.
+
+SQL> 
+SQL> ALTER TABLE COURSE_SECTION
+  2  ADD CONSTRAINT fk_Cid FOREIGN KEY (Cid)
+  3  REFERENCES COURSE;
+
+Table altered.
+
+SQL> 
+SQL> ALTER TABLE COURSE_SECTION
+  2  ADD CONSTRAINT fk_Termid FOREIGN KEY (Termid)
+  3  REFERENCES TERM;
+
+Table altered.
+
+SQL> 
+SQL> ALTER TABLE COURSE_SECTION
+  2  ADD CONSTRAINT fk_COURSE_SECTION_Fid FOREIGN KEY (Fid)
+  3  REFERENCES FACULTY;
+
+Table altered.
+
+SQL> 
+SQL> ALTER TABLE COURSE_SECTION
+  2  ADD CONSTRAINT fk_Locid FOREIGN KEY (Locid)
+  3  REFERENCES LOCATION;
+
+Table altered.
+
+SQL> 
+SQL> ALTER TABLE ENROLLMENT
+  2  ADD CONSTRAINT Sid_Csecid_CK UNIQUE (Sid, Csecid);
+
+Table altered.
+
+SQL> 
+SQL> ALTER TABLE ENROLLMENT
+  2  ADD CONSTRAINT fk_Sid FOREIGN KEY (Sid)
+  3  REFERENCES STUDENT;
+
+Table altered.
+
+SQL> 
+SQL> ALTER TABLE ENROLLMENT
+  2  ADD CONSTRAINT fk_Csecid FOREIGN KEY (Csecid)
+  3  REFERENCES COURSE_SECTION;
+
+Table altered.
+
+SQL> 
+SQL> 
+SQL> ALTER TABLE FACULTY
+  2  ADD CONSTRAINT cc_F_rank
+  3  CHECK (F_rank in ('ASSO', 'FULL', 'ASST', 'ADJ')) ;
+
+Table altered.
+
+SQL> 
+SQL> ALTER TABLE STUDENT
+  2  ADD CONSTRAINT cc_Sclass
+  3  CHECK (Sclass in ('FR', 'SO', 'JR', 'SR', 'GR')) ;
+
+Table altered.
+
+SQL> 
+SQL> ALTER TABLE TERM
+  2  ADD CONSTRAINT cc_Status
+  3  CHECK (status in ('OPEN', 'CLOSED')) ;
+
+Table altered.
+
+SQL> 
+SQL> ALTER TABLE ENROLLMENT
+  2  ADD CONSTRAINT cc_Grade
+  3  CHECK (grade in ('A', 'B', 'C', 'D', 'F', 'I', 'W')) ;
+
+Table altered.
+
+SQL> 
+SQL> 
+SQL> 
+SQL> INSERT INTO LOCATION
+  2  VALUES(53, 'BUS', 424, 45);
+
+1 row created.
+
+SQL> INSERT INTO LOCATION
+  2  VALUES(54, 'BUS', 402, 35);
+
+1 row created.
+
+SQL> INSERT INTO LOCATION
+  2  VALUES(55, 'BUS', 433, 100);
+
+1 row created.
+
+SQL> 
+SQL> 
+SQL> INSERT INTO FACULTY
+  2  VALUES(10, 'Cox', 'Kim', 'J', 7155551234, 'ASSO', 1181);
+
+1 row created.
+
+SQL> INSERT INTO FACULTY
+  2  VALUES(11, 'Blanchard', 'Frank', 'R', 7155559087, 'FULL', 1075);
+
+1 row created.
+
+SQL> INSERT INTO FACULTY
+  2  VALUES(12, 'McClure', 'William', 'L', 7155556409, 'ADJ', 1690);
+
+1 row created.
+
+SQL> 
+SQL> 
+SQL> INSERT INTO STUDENT
+  2  VALUES(100, 'McClure', 'Sarah', 'M', '144 Windridge Blvd.', 'Eau Claire', 'WI',
+  3  54703, 7155559876, 'SR', '14-JUL-1979', 8891, 10);
+
+1 row created.
+
+SQL> INSERT INTO STUDENT
+  2  VALUES(101, 'Bowie', 'Jim', 'D', '454 St. John Street', 'Eau Claire', 'WI',
+  3  54702, 7155552345, 'SR', '19-AUG-1979', 1230, 11);
+
+1 row created.
+
+SQL> INSERT INTO STUDENT
+  2  VALUES(102, 'Boone', 'Daniel', NULL, '8921 Circle Drive', 'Bloomer', 'WI',
+  3  54715, 7155553907, 'JR', '10-OCT-1977', 1613, 11);
+
+1 row created.
+
+SQL> 
+SQL> 
+SQL> INSERT INTO TERM
+  2  VALUES(1, 'Spring 2004', 'CLOSED');
+
+1 row created.
+
+SQL> INSERT INTO TERM
+  2  VALUES(2, 'Summer 2004', 'OPEN');
+
+1 row created.
+
+SQL> 
+SQL> 
+SQL> INSERT INTO COURSE
+  2  VALUES(1, 'MIS101', 'Intro. to Info. Systems', 3);
+
+1 row created.
+
+SQL> INSERT INTO COURSE
+  2  VALUES(2, 'MIS321', 'Systems Analysis and Design', 3);
+
+1 row created.
+
+SQL> INSERT INTO COURSE
+  2  VALUES(3, 'MIS349', 'Intro to Database Management', 3);
+
+1 row created.
+
+SQL> 
+SQL> 
+SQL> INSERT INTO COURSE_SECTION
+  2  VALUES(1000, 1, 2, 1, 12, 'MWF', 55, 100, 35);
+
+1 row created.
+
+SQL> INSERT INTO COURSE_SECTION
+  2  VALUES(1001, 1, 2, 2, 10, 'TTH', 54, 45, 35);
+
+1 row created.
+
+SQL> INSERT INTO COURSE_SECTION
+  2  VALUES(1002, 2, 2, 3, 10, 'MWF', 53, 35, 32);
+
+1 row created.
+
+SQL> INSERT INTO COURSE_SECTION
+  2  VALUES(1003, 3, 2, 1, 11, 'TTH', 54, 45, 35);
+
+1 row created.
+
+SQL> 
+SQL> 
+SQL> INSERT INTO ENROLLMENT
+  2  VALUES(100, 1000, 'A');
+
+1 row created.
+
+SQL> INSERT INTO ENROLLMENT
+  2  VALUES(100, 1003, 'A');
+
+1 row created.
+
+SQL> INSERT INTO ENROLLMENT E
+  2  VALUES(101, 1000, 'C');
+
+1 row created.
+
+SQL> INSERT INTO ENROLLMENT
+  2  VALUES(102, 1000, 'C');
+
+1 row created.
+
+SQL> INSERT INTO ENROLLMENT
+  2  VALUES(102, 1001, NULL);
+
+1 row created.
+
+SQL> INSERT INTO ENROLLMENT
+  2  VALUES(102, 1003, 'I');
+
+1 row created.
+
+SQL> 
+SQL> 
+SQL> SELECT * FROM LOCATION;
+
+     LOCID BLDG_CODE  ROOM     CAPACITY                                                                                                               
+---------- ---------- ------ ----------                                                                                                               
+        53 BUS        424            45                                                                                                               
+        54 BUS        402            35                                                                                                               
+        55 BUS        433           100                                                                                                               
+
+SQL> SELECT * FROM FACULTY;
+
+       FID FLNAME                    FFNAME                    F     FPHONE F_RA      F_PIN                                                           
+---------- ------------------------- ------------------------- - ---------- ---- ----------                                                           
+        10 Cox                       Kim                       J 7155551234 ASSO       1181                                                           
+        11 Blanchard                 Frank                     R 7155559087 FULL       1075                                                           
+        12 McClure                   William                   L 7155556409 ADJ        1690                                                           
+
+SQL> SELECT * FROM STUDENT;
+
+       SID SLNAME                    SFNAME                    S SADDR                          SCITY                          SS       SZIP          
+---------- ------------------------- ------------------------- - ------------------------------ ------------------------------ -- ----------          
+    SPHONE SC SDOB           S_PIN        FID                                                                                                         
+---------- -- --------- ---------- ----------                                                                                                         
+       100 McClure                   Sarah                     M 144 Windridge Blvd.            Eau Claire                     WI      54703          
+7155559876 SR 14-JUL-79       8891         10                                                                                                         
+                                                                                                                                                      
+       101 Bowie                     Jim                       D 454 St. John Street            Eau Claire                     WI      54702          
+7155552345 SR 19-AUG-79       1230         11                                                                                                         
+                                                                                                                                                      
+       102 Boone                     Daniel                      8921 Circle Drive              Bloomer                        WI      54715          
+7155553907 JR 10-OCT-77       1613         11                                                                                                         
+                                                                                                                                                      
+
+SQL> SELECT * FROM TERM;
+
+    TERMID TDESC                STATUS                                                                                                                
+---------- -------------------- --------------------                                                                                                  
+         1 Spring 2004          CLOSED                                                                                                                
+         2 Summer 2004          OPEN                                                                                                                  
+
+SQL> SELECT * FROM COURSE;
+
+       CID CALLID     CNAME                             CCREDIT                                                                                       
+---------- ---------- ------------------------------ ----------                                                                                       
+         1 MIS101     Intro. to Info. Systems                 3                                                                                       
+         2 MIS321     Systems Analysis and Design             3                                                                                       
+         3 MIS349     Intro to Database Management            3                                                                                       
+
+SQL> SELECT * FROM COURSE_SECTION;
+
+    CSECID        CID     TERMID     SECNUM        FID DAY             LOCID    MAXENRL   CURRENRL                                                    
+---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------                                                    
+      1000          1          2          1         12 MWF                55        100         35                                                    
+      1001          1          2          2         10 TTH                54         45         35                                                    
+      1002          2          2          3         10 MWF                53         35         32                                                    
+      1003          3          2          1         11 TTH                54         45         35                                                    
+
+SQL> SELECT * FROM ENROLLMENT;
+
+       SID     CSECID G                                                                                                                               
+---------- ---------- -                                                                                                                               
+       100       1000 A                                                                                                                               
+       100       1003 A                                                                                                                               
+       101       1000 C                                                                                                                               
+       102       1000 C                                                                                                                               
+       102       1001                                                                                                                                 
+       102       1003 I                                                                                                                               
+
+6 rows selected.
+
+SQL> spool off
